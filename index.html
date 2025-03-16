@@ -12,8 +12,8 @@
     <button id="startButton" class="px-6 py-3 mb-4 bg-yellow-400 text-black font-bold text-lg rounded-full shadow-lg hover:bg-yellow-500 transition">Start Throw Detection</button>
     <canvas id="accelChart" class="bg-gray-800 p-2 rounded-lg shadow-lg"></canvas>
     <div class="mt-4 text-center bg-white text-black p-4 rounded-lg shadow-md">
-        <p class="text-lg font-semibold">Throw Acceleration: <span id="throwAccel">0</span> m/s²</p>
-        <p class="text-lg font-semibold">Impact Force: <span id="impactForce">0</span> N</p>
+        <p class="text-lg font-semibold">Max Velocity: <span id="maxVelocity">0</span> m/s</p>
+        <p class="text-lg font-semibold">Kinetic Energy: <span id="kineticEnergy">0</span> J</p>
     </div>
     
     <script>
@@ -21,9 +21,10 @@
         let timestamps = [];
         let isDetecting = false;
         let isThrown = false;
-        let maxAcceleration = 0;
-        let impactForce = 0;
+        let maxVelocity = 0;
+        let kineticEnergy = 0;
         let velocity = 0;
+        let lastVelocity = 0;
         const mass = 0.2; // Assume phone mass ~200g
         const timeInterval = 0.1; // 100ms sampling
 
@@ -39,13 +40,14 @@
         document.getElementById('startButton').addEventListener('click', () => {
             isDetecting = true;
             isThrown = false;
-            maxAcceleration = 0;
-            impactForce = 0;
+            maxVelocity = 0;
+            kineticEnergy = 0;
             velocity = 0;
+            lastVelocity = 0;
             accelData = [];
             timestamps = [];
-            document.getElementById('throwAccel').textContent = '0';
-            document.getElementById('impactForce').textContent = '0';
+            document.getElementById('maxVelocity').textContent = '0';
+            document.getElementById('kineticEnergy').textContent = '0';
         });
 
         if (window.DeviceMotionEvent) {
@@ -67,18 +69,20 @@
                 let magnitude = smoothedData[smoothedData.length - 1];
                 
                 velocity += magnitude * timeInterval; // Basic integration
+                if (velocity > maxVelocity) {
+                    maxVelocity = velocity;
+                }
                 
-                if (!isThrown && magnitude > 15) { // Detect motion onset
+                if (!isThrown && velocity > 2) { // Detect motion onset
                     isThrown = true;
-                    maxAcceleration = magnitude;
                 }
                 
                 if (isThrown && magnitude < 2) { // Detect stop
                     isThrown = false;
                     isDetecting = false; // Stop detecting until button is pressed again
-                    impactForce = (mass * maxAcceleration) / 0.2; // F = ma/t
-                    document.getElementById('throwAccel').textContent = maxAcceleration.toFixed(2);
-                    document.getElementById('impactForce').textContent = impactForce.toFixed(2);
+                    kineticEnergy = 0.5 * mass * maxVelocity * maxVelocity; // KE = 1/2 m v²
+                    document.getElementById('maxVelocity').textContent = maxVelocity.toFixed(2);
+                    document.getElementById('kineticEnergy').textContent = kineticEnergy.toFixed(2);
                 }
                 
                 chart.data.labels = timestamps;
