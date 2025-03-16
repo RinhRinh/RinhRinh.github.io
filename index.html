@@ -20,6 +20,7 @@
         let measuring = false;
         let accelerationHistory = [];
         let impactForce = 0;
+        let lastUpdate = Date.now();
 
         function requestPermission() {
             if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -53,8 +54,12 @@
                         Math.pow(event.acceleration.y || 0, 2) +
                         Math.pow(event.acceleration.z || 0, 2)
                     );
-
-                    document.getElementById('current-acceleration').textContent = 'Current Acceleration: ' + totalAcceleration.toFixed(3) + ' m/s²';
+                    
+                    let now = Date.now();
+                    if (now - lastUpdate >= 2000) { 
+                        document.getElementById('current-acceleration').textContent = 'Current Acceleration: ' + totalAcceleration.toFixed(3) + ' m/s²';
+                        lastUpdate = now;
+                    }
                     
                     if (measuring) {
                         accelerationHistory.push(totalAcceleration);
@@ -62,9 +67,13 @@
                         if (accelerationHistory.length > 2) {
                             let firstPeak = Math.max(...accelerationHistory.slice(0, accelerationHistory.length - 1));
                             let secondPeak = Math.max(...accelerationHistory.slice(accelerationHistory.indexOf(firstPeak) + 1));
-                            impactForce = secondPeak;
                             
-                            document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
+                            if (secondPeak > 3) {
+                                impactForce = secondPeak;
+                                document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
+                            } else {
+                                document.getElementById('impact-force').textContent = 'Impact Force: Below Threshold';
+                            }
                             measuring = false;
                         }
                     }
