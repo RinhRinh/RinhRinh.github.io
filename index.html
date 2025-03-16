@@ -3,73 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to My Website</title>
+    <title>Impact Force Measurement</title>
     <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background: white;
-            transition: background 1s;
-        }
-        h1 {
-            color: black;
-            transition: color 1s;
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            background: lightgray;
-            border: 1px solid black;
-            cursor: pointer;
-            transition: background 1s;
-        }
-        #hacked, #broken {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-        }
-       
-        #hacked {
-            background: black;
-            color: red;
-            font-size: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            display: none;
-        }
-        #broken {
-            background: url('https://plus.unsplash.com/premium_photo-1725309316088-e1690bd3d336?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y3JhY2tlZCUyMHNjcmVlbnxlbnwwfHwwfHx8MA%3D%3D') no-repeat center center/cover;
-            z-index: 3000;
-            display: none;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .data { font-size: 1.5em; margin: 10px 0; }
+        button { padding: 10px 20px; font-size: 1.2em; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Welcome to My Professional Website</h1>
-    <p>This is a normal, totally legitimate website. Nothing strange here!</p>
-    <button onclick="startChaos()">Click Me for More Info</button>
-    <div id="kaleidoscope"></div>
-    <div id="hacked">YOU HAVE BEEN HACKED!</div>
-    <div id="broken"></div>
+    <h1>Measure Impact Force</h1>
+    <button id="start-button">Start Measurement</button>
+    <div class="data" id="impact-force">Impact Force: Waiting...</div>
+    
     <script>
-        function startChaos() {
-            document.body.style.background = 'pink';
-            document.querySelector('h1').style.color = 'red';
-            document.querySelector('button').style.background = 'lime';
-            setTimeout(() => {
-              
-                document.getElementById('kaleidoscope').style.display = 'none';
-                document.getElementById('hacked').style.display = 'flex';
-            }, 3000);
-            setTimeout(() => {
-                document.getElementById('hacked').style.display = 'none';
-                document.getElementById('broken').style.display = 'block';
-            }, 5000);
+        let measuring = false;
+        let accelerationHistory = [];
+        let impactForce = 0;
+        
+        document.getElementById('start-button').addEventListener('click', function() {
+            measuring = true;
+            accelerationHistory = [];
+            impactForce = 0;
+            document.getElementById('impact-force').textContent = 'Impact Force: Measuring...';
+        });
+
+        if ('DeviceMotionEvent' in window) {
+            window.addEventListener('devicemotion', function(event) {
+                if (measuring) {
+                    let totalAcceleration = Math.sqrt(
+                        Math.pow(event.acceleration.x || 0, 2) +
+                        Math.pow(event.acceleration.y || 0, 2) +
+                        Math.pow(event.acceleration.z || 0, 2)
+                    );
+                    
+                    accelerationHistory.push(totalAcceleration);
+                    
+                    if (accelerationHistory.length > 2) {
+                        let firstPeak = Math.max(...accelerationHistory.slice(0, accelerationHistory.length - 1));
+                        let secondPeak = Math.max(...accelerationHistory.slice(accelerationHistory.indexOf(firstPeak) + 1));
+                        impactForce = secondPeak;
+                        
+                        document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
+                        measuring = false;
+                    }
+                }
+            });
+        } else {
+            alert('Accelerometer not supported on this device.');
         }
     </script>
 </body>
