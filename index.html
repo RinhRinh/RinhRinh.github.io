@@ -19,6 +19,7 @@
     <script>
         let measuring = false;
         let accelerationHistory = [];
+        let firstPeakDetected = false;
         let impactForce = 0;
         let lastUpdate = Date.now();
 
@@ -41,6 +42,7 @@
         document.getElementById('start-button').addEventListener('click', function() {
             measuring = true;
             accelerationHistory = [];
+            firstPeakDetected = false;
             impactForce = 0;
             document.getElementById('impact-force').textContent = 'Impact Force: Measuring...';
             requestPermission();
@@ -64,16 +66,11 @@
                     if (measuring) {
                         accelerationHistory.push(totalAcceleration);
                         
-                        if (accelerationHistory.length > 5) {
-                            let firstPeakIndex = accelerationHistory.findIndex(a => a === Math.max(...accelerationHistory));
-                            let secondPeak = Math.max(...accelerationHistory.slice(firstPeakIndex + 1));
-                            
-                            if (secondPeak > 3) {
-                                impactForce = secondPeak;
-                                document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
-                            } else {
-                                document.getElementById('impact-force').textContent = 'Impact Force: Below Threshold';
-                            }
+                        if (!firstPeakDetected && totalAcceleration > 3) {
+                            firstPeakDetected = true;
+                        } else if (firstPeakDetected && totalAcceleration > 3) {
+                            impactForce = totalAcceleration;
+                            document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
                             measuring = false;
                         }
                     }
