@@ -21,17 +21,16 @@
     
     <script>
         let measuring = false;
+        let peakMeasurement = false;
         let accelerationHistory = [];
-        let firstPeakDetected = false;
         let impactForce = 0;
         let lastUpdate = Date.now();
         let lastChartUpdate = Date.now();
-        let pastAcceleration = 0;
-        let declineCounter = 0;
-        const declineThreshold = 20;
-        let firstPeak = 0;
+        let maxPeak = 0;
+        let startTime = 0;
         const maxDataPoints = 50;
-
+        const peakDuration = 2500;
+        
         const ctx = document.getElementById('accelerationChart').getContext('2d');
         const accelerationChart = new Chart(ctx, {
             type: 'line',
@@ -82,12 +81,11 @@
 
         document.getElementById('start-button').addEventListener('click', function() {
             measuring = true;
+            peakMeasurement = false;
             accelerationHistory = [];
-            firstPeakDetected = false;
             impactForce = 0;
-            pastAcceleration = 0;
-            declineCounter = 0;
-            firstPeak = 0;
+            maxPeak = 0;
+            startTime = 0;
             document.getElementById('impact-force').textContent = 'Impact Force: Measuring...';
             requestPermission();
         });
@@ -112,26 +110,21 @@
                     }
                     
                     if (measuring) {
-                        accelerationHistory.push(totalAcceleration);
-                        
-                        if (totalAcceleration < pastAcceleration) {
-                            declineCounter++;
-                        } else {
-                            declineCounter = 0;
+                        if (!peakMeasurement && totalAcceleration > 10) {
+                            peakMeasurement = true;
+                            startTime = now;
                         }
-
-                        if (declineCounter >= declineThreshold) {
-                            if (!firstPeakDetected && pastAcceleration > 3) {
-                                firstPeakDetected = true;
-                                firstPeak = pastAcceleration;
-                            } else if (firstPeakDetected && pastAcceleration > 3) {
-                                impactForce = pastAcceleration;
+                        
+                        if (peakMeasurement) {
+                            if (totalAcceleration > maxPeak) {
+                                maxPeak = totalAcceleration;
+                            }
+                            if (now - startTime >= peakDuration) {
+                                impactForce = maxPeak;
                                 document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
                                 measuring = false;
                             }
-                            declineCounter = 0;
                         }
-                        pastAcceleration = totalAcceleration;
                     }
                 });
             } else {
