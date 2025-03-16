@@ -51,9 +51,10 @@
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', (event) => {
                 if (!isDetecting) return;
-                let { x, y, z } = event.accelerationIncludingGravity;
-                let rawMagnitude = Math.sqrt(x * x + y * y + z * z) - 9.81;
+                let { x, y, z } = event.acceleration;
+                if (x === null || y === null || z === null) return;
                 
+                let rawMagnitude = Math.sqrt(x * x + y * y + z * z);
                 accelData.push(rawMagnitude);
                 timestamps.push(new Date().toLocaleTimeString());
                 
@@ -67,18 +68,21 @@
                 
                 velocity += magnitude * timeInterval; // Basic integration
                 
-                if (!isThrown && velocity > 2) { // Detect motion onset
+                if (!isThrown && magnitude > 15) { // Detect motion onset
                     isThrown = true;
                     maxAcceleration = magnitude;
                 }
                 
-                if (isThrown && velocity < 0.5) { // Detect stop
+                if (isThrown && magnitude < 2) { // Detect stop
                     isThrown = false;
                     isDetecting = false; // Stop detecting until button is pressed again
-                    impactForce = mass * maxAcceleration / 0.2; // F = ma/t
+                    impactForce = (mass * maxAcceleration) / 0.2; // F = ma/t
                     document.getElementById('throwAccel').textContent = maxAcceleration.toFixed(2);
                     document.getElementById('impactForce').textContent = impactForce.toFixed(2);
                 }
+                
+                chart.data.labels = timestamps;
+                chart.data.datasets[0].data = accelData;
                 chart.update();
             });
         } else {
