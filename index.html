@@ -25,6 +25,7 @@
         let firstPeakDetected = false;
         let impactForce = 0;
         let lastUpdate = Date.now();
+        let lastChartUpdate = Date.now();
         let pastAcceleration = 0;
         let declineCounter = 0;
         const declineThreshold = 20;
@@ -105,7 +106,10 @@
                         document.getElementById('current-acceleration').textContent = 'Current Acceleration: ' + totalAcceleration.toFixed(3) + ' m/s²';
                         lastUpdate = now;
                     }
-                    updateChart(totalAcceleration);
+                    if (now - lastChartUpdate >= 250) {
+                        updateChart(totalAcceleration);
+                        lastChartUpdate = now;
+                    }
                     
                     if (measuring) {
                         accelerationHistory.push(totalAcceleration);
