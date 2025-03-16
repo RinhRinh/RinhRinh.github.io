@@ -7,24 +7,36 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
-    <h1 class="text-3xl font-bold mb-4">Phone Throw Tracker</h1>
-    <canvas id="accelChart" class="bg-gray-800 p-2 rounded-lg"></canvas>
-    <div class="mt-4 text-center">
-        <p class="text-lg">Throw Acceleration: <span id="throwAccel">0</span> m/s²</p>
-        <p class="text-lg">Impact Force: <span id="impactForce">0</span> N</p>
+<body class="bg-gradient-to-r from-purple-500 to-pink-500 text-white flex flex-col items-center justify-center min-h-screen p-4">
+    <h1 class="text-4xl font-extrabold mb-4 animate-bounce">🚀 Phone Throw Tracker 🎯</h1>
+    <button id="startButton" class="px-6 py-3 mb-4 bg-yellow-400 text-black font-bold text-lg rounded-full shadow-lg hover:bg-yellow-500 transition">Start Throw Detection</button>
+    <canvas id="accelChart" class="bg-gray-800 p-2 rounded-lg shadow-lg"></canvas>
+    <div class="mt-4 text-center bg-white text-black p-4 rounded-lg shadow-md">
+        <p class="text-lg font-semibold">Throw Acceleration: <span id="throwAccel">0</span> m/s²</p>
+        <p class="text-lg font-semibold">Impact Force: <span id="impactForce">0</span> N</p>
     </div>
     
     <script>
         let accelData = [];
         let timestamps = [];
+        let isDetecting = false;
         let isThrown = false;
         let maxAcceleration = 0;
         let impactForce = 0;
         const mass = 0.2; // Assume phone mass ~200g
 
+        document.getElementById('startButton').addEventListener('click', () => {
+            isDetecting = true;
+            isThrown = false;
+            maxAcceleration = 0;
+            impactForce = 0;
+            document.getElementById('throwAccel').textContent = '0';
+            document.getElementById('impactForce').textContent = '0';
+        });
+
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', (event) => {
+                if (!isDetecting) return;
                 let { x, y, z } = event.accelerationIncludingGravity;
                 let magnitude = Math.sqrt(x * x + y * y + z * z) - 9.81;
                 timestamps.push(new Date().toLocaleTimeString());
@@ -35,17 +47,17 @@
                     timestamps.shift();
                 }
                 
-                if (magnitude > 15) { // Threshold for detecting a throw
+                if (!isThrown && magnitude > 15) { // Threshold for detecting a throw
                     isThrown = true;
                     maxAcceleration = magnitude;
                 }
                 
                 if (isThrown && magnitude < 2) { // Detect stop
                     isThrown = false;
+                    isDetecting = false; // Stop detecting until button is pressed again
                     impactForce = mass * maxAcceleration / 0.2; // F = ma/t
                     document.getElementById('throwAccel').textContent = maxAcceleration.toFixed(2);
                     document.getElementById('impactForce').textContent = impactForce.toFixed(2);
-                    maxAcceleration = 0;
                 }
                 chart.update();
             });
@@ -61,7 +73,7 @@
                 datasets: [{
                     label: 'Acceleration (m/s²)',
                     data: accelData,
-                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderColor: 'rgba(255, 255, 0, 1)',
                     borderWidth: 2,
                     fill: false
                 }]
