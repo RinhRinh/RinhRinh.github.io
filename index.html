@@ -23,13 +23,27 @@
         let isThrown = false;
         let maxAcceleration = 0;
         let impactForce = 0;
+        let velocity = 0;
         const mass = 0.2; // Assume phone mass ~200g
+        const timeInterval = 0.1; // 100ms sampling
+
+        function movingAverage(data, windowSize = 5) {
+            if (data.length < windowSize) return data;
+            return data.map((_, i, arr) => {
+                if (i < windowSize - 1) return arr[i];
+                const subset = arr.slice(i - windowSize + 1, i + 1);
+                return subset.reduce((sum, val) => sum + val, 0) / windowSize;
+            });
+        }
 
         document.getElementById('startButton').addEventListener('click', () => {
             isDetecting = true;
             isThrown = false;
             maxAcceleration = 0;
             impactForce = 0;
+            velocity = 0;
+            accelData = [];
+            timestamps = [];
             document.getElementById('throwAccel').textContent = '0';
             document.getElementById('impactForce').textContent = '0';
         });
@@ -38,21 +52,27 @@
             window.addEventListener('devicemotion', (event) => {
                 if (!isDetecting) return;
                 let { x, y, z } = event.accelerationIncludingGravity;
-                let magnitude = Math.sqrt(x * x + y * y + z * z) - 9.81;
+                let rawMagnitude = Math.sqrt(x * x + y * y + z * z) - 9.81;
+                
+                accelData.push(rawMagnitude);
                 timestamps.push(new Date().toLocaleTimeString());
-                accelData.push(magnitude);
                 
                 if (accelData.length > 20) {
                     accelData.shift();
                     timestamps.shift();
                 }
                 
-                if (!isThrown && magnitude > 15) { // Threshold for detecting a throw
+                let smoothedData = movingAverage(accelData);
+                let magnitude = smoothedData[smoothedData.length - 1];
+                
+                velocity += magnitude * timeInterval; // Basic integration
+                
+                if (!isThrown && velocity > 2) { // Detect motion onset
                     isThrown = true;
                     maxAcceleration = magnitude;
                 }
                 
-                if (isThrown && magnitude < 2) { // Detect stop
+                if (isThrown && velocity < 0.5) { // Detect stop
                     isThrown = false;
                     isDetecting = false; // Stop detecting until button is pressed again
                     impactForce = mass * maxAcceleration / 0.2; // F = ma/t
