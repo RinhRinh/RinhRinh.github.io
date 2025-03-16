@@ -24,7 +24,9 @@
         let maxVelocity = 0;
         let kineticEnergy = 0;
         let velocity = 0;
-        let lastVelocity = 0;
+        let thresholdReached = false;
+        let thresholdTime = 0;
+        const threshold = 5; // Velocity threshold to detect throw
         const mass = 0.2; // Assume phone mass ~200g
         const timeInterval = 0.1; // 100ms sampling
 
@@ -43,7 +45,8 @@
             maxVelocity = 0;
             kineticEnergy = 0;
             velocity = 0;
-            lastVelocity = 0;
+            thresholdReached = false;
+            thresholdTime = 0;
             accelData = [];
             timestamps = [];
             document.getElementById('maxVelocity').textContent = '0';
@@ -69,16 +72,20 @@
                 let magnitude = smoothedData[smoothedData.length - 1];
                 
                 velocity += magnitude * timeInterval; // Basic integration
-                if (velocity > maxVelocity) {
+                
+                if (!thresholdReached && velocity > threshold) {
+                    thresholdReached = true;
+                    thresholdTime = performance.now();
                     maxVelocity = velocity;
                 }
                 
-                if (!isThrown && velocity > 2) { // Detect motion onset
-                    isThrown = true;
+                if (thresholdReached && performance.now() - thresholdTime <= 1000) {
+                    if (velocity > maxVelocity) {
+                        maxVelocity = velocity;
+                    }
                 }
                 
-                if (isThrown && magnitude < 2) { // Detect stop
-                    isThrown = false;
+                if (thresholdReached && magnitude < 2) { // Detect stop
                     isDetecting = false; // Stop detecting until button is pressed again
                     kineticEnergy = 0.5 * mass * maxVelocity * maxVelocity; // KE = 1/2 m v²
                     document.getElementById('maxVelocity').textContent = maxVelocity.toFixed(2);
