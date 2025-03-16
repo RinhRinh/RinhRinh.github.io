@@ -64,9 +64,9 @@
                     if (measuring) {
                         accelerationHistory.push(totalAcceleration);
                         
-                        if (accelerationHistory.length > 2) {
-                            let firstPeak = Math.max(...accelerationHistory.slice(0, accelerationHistory.length - 1));
-                            let secondPeak = Math.max(...accelerationHistory.slice(accelerationHistory.indexOf(firstPeak) + 1));
+                        if (accelerationHistory.length > 5) {
+                            let firstPeakIndex = accelerationHistory.findIndex(a => a === Math.max(...accelerationHistory));
+                            let secondPeak = Math.max(...accelerationHistory.slice(firstPeakIndex + 1));
                             
                             if (secondPeak > 3) {
                                 impactForce = secondPeak;
