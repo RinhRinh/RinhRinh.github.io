@@ -88,8 +88,8 @@
                 if (thresholdReached && magnitude < 2) { // Detect stop
                     isDetecting = false; // Stop detecting until button is pressed again
                     kineticEnergy = 0.5 * mass * maxVelocity * maxVelocity; // KE = 1/2 m v²
-                    document.getElementById('maxVelocity').textContent = maxVelocity.toFixed(2);
-                    document.getElementById('kineticEnergy').textContent = kineticEnergy.toFixed(2);
+                    document.getElementById('maxVelocity').textContent = (maxVelocity / 15).toFixed(2);
+                    document.getElementById('kineticEnergy').textContent = (kineticEnergy / 15).toFixed(2);
                 }
                 
                 chart.data.labels = timestamps;
