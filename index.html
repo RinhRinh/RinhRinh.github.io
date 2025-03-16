@@ -3,43 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impact Force Measurement</title>
+    <title>Phone Throw Tracker</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        .data { font-size: 1.5em; margin: 10px 0; }
-        button { padding: 10px 20px; font-size: 1.2em; cursor: pointer; }
-        canvas { max-width: 600px; margin: 20px auto; }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Measure Impact Force</h1>
-    <button id="start-button">Start Measurement</button>
-    <div class="data" id="impact-force">Impact Force: Waiting...</div>
-    <div class="data" id="current-acceleration">Current Acceleration: Waiting...</div>
-    <canvas id="accelerationChart"></canvas>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
+    <h1 class="text-3xl font-bold mb-4">Phone Throw Tracker</h1>
+    <canvas id="accelChart" class="bg-gray-800 p-2 rounded-lg"></canvas>
+    <div class="mt-4 text-center">
+        <p class="text-lg">Throw Acceleration: <span id="throwAccel">0</span> m/s²</p>
+        <p class="text-lg">Impact Force: <span id="impactForce">0</span> N</p>
+    </div>
     
     <script>
-        let measuring = false;
-        let peakMeasurement = false;
-        let accelerationHistory = [];
+        let accelData = [];
+        let timestamps = [];
+        let isThrown = false;
+        let maxAcceleration = 0;
         let impactForce = 0;
-        let lastUpdate = Date.now();
-        let lastChartUpdate = Date.now();
-        let maxPeak = 0;
-        let startTime = 0;
-        const maxDataPoints = 50;
-        const peakDuration = 2500;
-        
-        const ctx = document.getElementById('accelerationChart').getContext('2d');
-        const accelerationChart = new Chart(ctx, {
+        const mass = 0.2; // Assume phone mass ~200g
+
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', (event) => {
+                let { x, y, z } = event.accelerationIncludingGravity;
+                let magnitude = Math.sqrt(x * x + y * y + z * z) - 9.81;
+                timestamps.push(new Date().toLocaleTimeString());
+                accelData.push(magnitude);
+                
+                if (accelData.length > 20) {
+                    accelData.shift();
+                    timestamps.shift();
+                }
+                
+                if (magnitude > 15) { // Threshold for detecting a throw
+                    isThrown = true;
+                    maxAcceleration = magnitude;
+                }
+                
+                if (isThrown && magnitude < 2) { // Detect stop
+                    isThrown = false;
+                    impactForce = mass * maxAcceleration / 0.2; // F = ma/t
+                    document.getElementById('throwAccel').textContent = maxAcceleration.toFixed(2);
+                    document.getElementById('impactForce').textContent = impactForce.toFixed(2);
+                    maxAcceleration = 0;
+                }
+                chart.update();
+            });
+        } else {
+            alert("Accelerometer not supported on this device!");
+        }
+
+        const ctx = document.getElementById('accelChart').getContext('2d');
+        const chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: [],
+                labels: timestamps,
                 datasets: [{
                     label: 'Acceleration (m/s²)',
-                    data: [],
-                    borderColor: 'blue',
+                    data: accelData,
+                    borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 2,
                     fill: false
                 }]
@@ -47,90 +69,12 @@
             options: {
                 responsive: true,
                 scales: {
-                    x: { display: false },
-                    y: { beginAtZero: true }
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
         });
-
-        function updateChart(value) {
-            if (accelerationChart.data.labels.length >= maxDataPoints) {
-                accelerationChart.data.labels.shift();
-                accelerationChart.data.datasets[0].data.shift();
-            }
-            accelerationChart.data.labels.push('');
-            accelerationChart.data.datasets[0].data.push(value);
-            accelerationChart.update();
-        }
-
-        function requestPermission() {
-            if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                DeviceMotionEvent.requestPermission()
-                    .then(permissionState => {
-                        if (permissionState === 'granted') {
-                            startListening();
-                        } else {
-                            alert('Permission denied for motion sensors.');
-                        }
-                    })
-                    .catch(console.error);
-            } else {
-                startListening();
-            }
-        }
-
-        document.getElementById('start-button').addEventListener('click', function() {
-            measuring = true;
-            peakMeasurement = false;
-            accelerationHistory = [];
-            impactForce = 0;
-            maxPeak = 0;
-            startTime = 0;
-            document.getElementById('impact-force').textContent = 'Impact Force: Measuring...';
-            requestPermission();
-        });
-
-        function startListening() {
-            if ('DeviceMotionEvent' in window) {
-                window.addEventListener('devicemotion', function(event) {
-                    let totalAcceleration = Math.sqrt(
-                        Math.pow(event.acceleration.x || 0, 2) +
-                        Math.pow(event.acceleration.y || 0, 2) +
-                        Math.pow(event.acceleration.z || 0, 2)
-                    );
-                    
-                    let now = Date.now();
-                    if (now - lastUpdate >= 500) { 
-                        document.getElementById('current-acceleration').textContent = 'Current Acceleration: ' + totalAcceleration.toFixed(3) + ' m/s²';
-                        lastUpdate = now;
-                    }
-                    if (now - lastChartUpdate >= 250) {
-                        updateChart(totalAcceleration);
-                        lastChartUpdate = now;
-                    }
-                    
-                    if (measuring) {
-                        if (!peakMeasurement && totalAcceleration > 10) {
-                            peakMeasurement = true;
-                            startTime = now;
-                        }
-                        
-                        if (peakMeasurement) {
-                            if (totalAcceleration > maxPeak) {
-                                maxPeak = totalAcceleration;
-                            }
-                            if (now - startTime >= peakDuration) {
-                                impactForce = maxPeak;
-                                document.getElementById('impact-force').textContent = 'Impact Force: ' + impactForce.toFixed(3) + ' m/s²';
-                                measuring = false;
-                            }
-                        }
-                    }
-                });
-            } else {
-                alert('Accelerometer not supported on this device.');
-            }
-        }
     </script>
 </body>
 </html>
