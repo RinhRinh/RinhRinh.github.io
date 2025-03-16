@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impact Force Measurement</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
         .data { font-size: 1.5em; margin: 10px 0; }
         button { padding: 10px 20px; font-size: 1.2em; cursor: pointer; }
+        canvas { max-width: 600px; margin: 20px auto; }
     </style>
 </head>
 <body>
@@ -15,6 +17,7 @@
     <button id="start-button">Start Measurement</button>
     <div class="data" id="impact-force">Impact Force: Waiting...</div>
     <div class="data" id="current-acceleration">Current Acceleration: Waiting...</div>
+    <canvas id="accelerationChart"></canvas>
     
     <script>
         let measuring = false;
@@ -26,6 +29,39 @@
         let declineCounter = 0;
         const declineThreshold = 20;
         let firstPeak = 0;
+        const maxDataPoints = 50;
+
+        const ctx = document.getElementById('accelerationChart').getContext('2d');
+        const accelerationChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Acceleration (m/s²)',
+                    data: [],
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { display: false },
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        function updateChart(value) {
+            if (accelerationChart.data.labels.length >= maxDataPoints) {
+                accelerationChart.data.labels.shift();
+                accelerationChart.data.datasets[0].data.shift();
+            }
+            accelerationChart.data.labels.push('');
+            accelerationChart.data.datasets[0].data.push(value);
+            accelerationChart.update();
+        }
 
         function requestPermission() {
             if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -69,6 +105,7 @@
                         document.getElementById('current-acceleration').textContent = 'Current Acceleration: ' + totalAcceleration.toFixed(3) + ' m/s²';
                         lastUpdate = now;
                     }
+                    updateChart(totalAcceleration);
                     
                     if (measuring) {
                         accelerationHistory.push(totalAcceleration);
