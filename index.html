@@ -596,7 +596,7 @@
                     <div class="card-content">
                         <h3>Saltwater Intrusion</h3>
                         <p>Rising sea levels are pushing saltwater into South Florida's freshwater Biscayne Aquifer, threatening drinking water supplies for millions of residents.</p>
-                        <p>This issue is exacerbated by the region's porous limestone bedrock, which allows seawater to penetrate inland from below.</p>
+                        <p>This issue is made worse by the region's limestone bedrock, which allows seawater to penetrate inland from below.</p>
                     </div>
                 </div>
                 
@@ -617,7 +617,7 @@
                     </div>
                     <div class="card-content">
                         <h3>Beach Erosion & Tourism</h3>
-                        <p>Florida's beaches are eroding at an accelerating rate, threatening the $100+ billion tourism industry that depends on pristine coastal environments.</p>
+                        <p>Florida's beaches are eroding at an accelerating rate, threatening the $100+ billion tourism industry that depends on coastal environments.</p>
                         <p>Higher sea levels allow storm surges to reach further inland, causing greater damage during hurricane season.</p>
                     </div>
                 </div>
@@ -625,7 +625,7 @@
             
             <div class="callout warning">
                 <h3>Compounding Effects</h3>
-                <p>Sea level rise amplifies the impact of extreme weather events. Even a modest hurricane can cause significantly more flooding when starting from a higher baseline sea level.</p>
+                <p>Sea level rise makes the impact of extreme weather events worse. Even a smaller hurricane can cause significantly more flooding when starting from a higher sea level.</p>
             </div>
         </div>
     </section>
@@ -674,9 +674,28 @@
             </div>
             
             <div class="map-container">
-                <div class="map-placeholder">
-                    <h3>South Florida Vulnerability Map</h3>
-                    <p>Interactive map showing areas most at risk from sea level rise</p>
+                <div id="vulnerabilityMap" style="width: 100%; height: 400px;"></div>
+            </div>
+            
+            <div style="background-color: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                <h3>Map Legend</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #ff4d4d; margin-right: 0.5rem;"></div>
+                        <span>Extreme Risk (0-2 ft above sea level)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #ffa64d; margin-right: 0.5rem;"></div>
+                        <span>High Risk (2-4 ft above sea level)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #ffff4d; margin-right: 0.5rem;"></div>
+                        <span>Moderate Risk (4-6 ft above sea level)</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #4dff4d; margin-right: 0.5rem;"></div>
+                        <span>Lower Risk (6+ ft above sea level)</span>
+                    </div>
                 </div>
             </div>
             
@@ -700,10 +719,10 @@
                     <div class="card-content">
                         <h3>Infrastructure Improvements</h3>
                         <ul>
-                            <li>Installing pumping systems to remove floodwater from streets and neighborhoods</li>
-                            <li>Building seawalls and surge barriers to protect critical areas</li>
-                            <li>Elevating roads and critical infrastructure above projected flood levels</li>
-                            <li>Upgrading stormwater management systems with backflow preventers and increased capacity</li>
+                            <li>We could install pumping systems to remove floodwater from streets and neighborhoods</li>
+                            <li>We could build seawalls and surge barriers to protect critical areas</li>
+                            <li>We could elevate roads and critical infrastructure above projected flood levels</li>
+                            <li>We could upgrade stormwater management systems with backflow preventers and increased capacity</li>
                         </ul>
                     </div>
                 </div>
@@ -715,10 +734,10 @@
                     <div class="card-content">
                         <h3>Nature-Based Solutions</h3>
                         <ul>
-                            <li>Restoring mangroves and wetlands that act as natural buffers against storm surge</li>
-                            <li>Creating living shorelines that combine vegetation with structural elements</li>
-                            <li>Building artificial reefs to break wave energy before it reaches shore</li>
-                            <li>Expanding green spaces in urban areas to absorb stormwater</li>
+                            <li>We could restore mangroves and wetlands that act as natural buffers against storm surge</li>
+                            <li>We could create living shorelines that combine vegetation with structural elements</li>
+                            <li>We could build artificial reefs to break wave energy before it reaches shore</li>
+                            <li>We could expand green spaces in urban areas to absorb stormwater</li>
                         </ul>
                     </div>
                 </div>
@@ -730,11 +749,11 @@
                     <div class="card-content">
                         <h3>Building Adaptations</h3>
                         <ul>
-                            <li>Elevating existing structures above base flood elevation</li>
-                            <li>Building new construction on pilings to allow water to flow underneath</li>
-                            <li>Installing flood vents to reduce pressure on foundations during floods</li>
-                            <li>Using flood-resistant building materials on lower floors</li>
-                            <li>Creating deployable flood barriers for doors and windows</li>
+                            <li>We could elevate existing structures above base flood elevation</li>
+                            <li>We could make new construction on pilings to allow water to flow underneath</li>
+                            <li>We could install flood vents to reduce pressure on foundations during floods</li>
+                            <li>We could use flood-resistant building materials on lower floors</li>
+                            <li>We could create deployable flood barriers for doors and windows</li>
                         </ul>
                     </div>
                 </div>
@@ -746,11 +765,11 @@
                     <div class="card-content">
                         <h3>Policy & Planning</h3>
                         <ul>
-                            <li>Updating building codes to account for future sea level projections</li>
-                            <li>Creating special assessment districts to fund adaptation projects</li>
-                            <li>Developing managed retreat strategies for highly vulnerable areas</li>
-                            <li>Establishing revolving loan funds to help property owners implement resilience measures</li>
-                            <li>Integrating sea level rise projections into all infrastructure planning</li>
+                            <li>We could update building codes to account for future sea level projections</li>
+                            <li>We could create special assessment districts to fund adaptation projects</li>
+                            <li>We could develop managed retreat strategies for highly vulnerable areas</li>
+                            <li>We could establisih revolving loan funds to help property owners implement resilience measures</li>
+                            <li>We could integrate sea level rise projections into all infrastructure planning</li>
                         </ul>
                     </div>
                 </div>
