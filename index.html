@@ -3,125 +3,827 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phone Throw Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-r from-purple-500 to-pink-500 text-white flex flex-col items-center justify-center min-h-screen p-4">
-    <h1 class="text-4xl font-extrabold mb-4 animate-bounce">🚀 Phone Throw Tracker 🎯</h1>
-    <button id="startButton" class="px-6 py-3 mb-4 bg-yellow-400 text-black font-bold text-lg rounded-full shadow-lg hover:bg-yellow-500 transition">Start Throw Detection</button>
-    <canvas id="accelChart" class="bg-gray-800 p-2 rounded-lg shadow-lg"></canvas>
-    <div class="mt-4 text-center bg-white text-black p-4 rounded-lg shadow-md">
-        <p class="text-lg font-semibold">Max Velocity: <span id="maxVelocity">0</span> m/s</p>
-        <p class="text-lg font-semibold">Kinetic Energy: <span id="kineticEnergy">0</span> J</p>
-    </div>
-    
-    <script>
-        let accelData = [];
-        let timestamps = [];
-        let isDetecting = false;
-        let isThrown = false;
-        let maxVelocity = 0;
-        let kineticEnergy = 0;
-        let velocity = 0;
-        let thresholdReached = false;
-        let thresholdTime = 0;
-        const threshold = 5; // Velocity threshold to detect throw
-        const mass = 0.2; // Assume phone mass ~200g
-        const timeInterval = 0.1; // 100ms sampling
-
-        function movingAverage(data, windowSize = 5) {
-            if (data.length < windowSize) return data;
-            return data.map((_, i, arr) => {
-                if (i < windowSize - 1) return arr[i];
-                const subset = arr.slice(i - windowSize + 1, i + 1);
-                return subset.reduce((sum, val) => sum + val, 0) / windowSize;
-            });
+    <title>Rising Tides: South Florida's Sea Level Challenge</title>
+    <style>
+        :root {
+            --primary: #1a73e8;
+            --secondary: #34a853;
+            --dark: #202124;
+            --light: #f8f9fa;
+            --danger: #ea4335;
+            --warning: #fbbc05;
+            --gray: #dadce0;
+            --ocean: #039be5;
         }
-
-        document.getElementById('startButton').addEventListener('click', () => {
-            isDetecting = true;
-            isThrown = false;
-            maxVelocity = 0;
-            kineticEnergy = 0;
-            velocity = 0;
-            thresholdReached = false;
-            thresholdTime = 0;
-            accelData = [];
-            timestamps = [];
-            document.getElementById('maxVelocity').textContent = '0';
-            document.getElementById('kineticEnergy').textContent = '0';
-        });
-
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', (event) => {
-                if (!isDetecting) return;
-                let { x, y, z } = event.acceleration;
-                if (x === null || y === null || z === null) return;
-                
-                let rawMagnitude = Math.sqrt(x * x + y * y + z * z);
-                accelData.push(rawMagnitude);
-                timestamps.push(new Date().toLocaleTimeString());
-                
-                if (accelData.length > 20) {
-                    accelData.shift();
-                    timestamps.shift();
-                }
-                
-                let smoothedData = movingAverage(accelData);
-                let magnitude = smoothedData[smoothedData.length - 1];
-                
-                velocity += magnitude * timeInterval; // Basic integration
-                
-                if (!thresholdReached && velocity > threshold) {
-                    thresholdReached = true;
-                    thresholdTime = performance.now();
-                    maxVelocity = velocity;
-                }
-                
-                if (thresholdReached && performance.now() - thresholdTime <= 1000) {
-                    if (velocity > maxVelocity) {
-                        maxVelocity = velocity;
-                    }
-                }
-                
-                if (thresholdReached && magnitude < 2) { // Detect stop
-                    isDetecting = false; // Stop detecting until button is pressed again
-                    kineticEnergy = 0.5 * mass * maxVelocity * maxVelocity; // KE = 1/2 m v²
-                    document.getElementById('maxVelocity').textContent = (maxVelocity / 15).toFixed(2);
-                    document.getElementById('kineticEnergy').textContent = (kineticEnergy / 15).toFixed(2);
-                }
-                
-                chart.data.labels = timestamps;
-                chart.data.datasets[0].data = accelData;
-                chart.update();
-            });
-        } else {
-            alert("Accelerometer not supported on this device!");
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        const ctx = document.getElementById('accelChart').getContext('2d');
-        const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: timestamps,
-                datasets: [{
-                    label: 'Acceleration (m/s²)',
-                    data: accelData,
-                    borderColor: 'rgba(255, 255, 0, 1)',
-                    borderWidth: 2,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        
+        body {
+            color: #333;
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--ocean), #0277bd);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="white" fill-opacity="1" d="M0,192L48,186.7C96,181,192,171,288,160C384,149,480,139,576,149.3C672,160,768,192,864,197.3C960,203,1056,181,1152,149.3C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+            background-size: 1440px 100%;
+            animation: wave 10s linear infinite;
+        }
+        
+        @keyframes wave {
+            0% {
+                background-position-x: 0;
             }
-        });
-    </script>
-</body>
-</html>
+            100% {
+                background-position-x: 1440px;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--ocean);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ocean);
+        }
+        
+        .hero {
+            position: relative;
+            text-align: center;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin: 2rem 0 1rem;
+            color: var(--ocean);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            margin: 0.5rem;
+        }
+        
+        .button:hover {
+            background-color: #1557b0;
+        }
+        
+        .button.secondary {
+            background-color: var(--secondary);
+        }
+        
+        .button.secondary:hover {
+            background-color: #2d8d47;
+        }
+        
+        section {
+            padding: 3rem 0;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .card:hover .card-image img {
+            transform: scale(1.05);
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--ocean);
+            margin-bottom: 0.5rem;
+        }
+        
+        .callout {
+            background-color: rgba(26, 115, 232, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .callout.warning {
+            background-color: rgba(251, 188, 5, 0.1);
+            border-left-color: var(--warning);
+        }
+        
+        .callout.danger {
+            background-color: rgba(234, 67, 53, 0.1);
+            border-left-color: var(--danger);
+        }
+        
+        .callout.success {
+            background-color: rgba(52, 168, 83, 0.1);
+            border-left-color: var(--secondary);
+        }
+        
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+        
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: var(--gray);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: white;
+            border: 4px solid var(--ocean);
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .left {
+            left: 0;
+        }
+        
+        .right {
+            left: 50%;
+        }
+        
+        .right::after {
+            left: -16px;
+        }
+        
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-content h3 {
+            margin-top: 0;
+        }
+        
+        .accordion {
+            margin-bottom: 1rem;
+        }
+        
+        .accordion-item {
+            margin-bottom: 0.5rem;
+        }
+        
+        .accordion-header {
+            padding: 1rem;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accordion-header:hover {
+            background-color: #f1f3f4;
+        }
+        
+        .accordion-content {
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0 0 4px 4px;
+            margin-top: -5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .show {
+            display: block;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-links h3 {
+            margin-top: 0;
+            color: white;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--gray);
+        }
+        
+        .cta {
+            background: linear-gradient(135deg, var(--primary), #7c4dff);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .map-container {
+            height: 400px;
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .map-placeholder {
+            background-color: #e0e0e0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 15px;
+            }
+            
+            .left::after, .right::after {
+                left: 15px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+            }
+            
+            .nav-links li {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container hero">
+            <div class="hero-content">
+                <h1>Rising Tides: South Florida's Sea Level Challenge</h1>
+                <p class="subtitle">Understanding the impact of sea level rise on our communities and what we can do about it</p>
+                <a href="#solutions" class="button">Explore Solutions</a>
+                <a href="#get-involved" class="button secondary">Get Involved</a>
+            </div>
+        </div>
+        <div class="wave"></div>
+    </header>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span>🌊 Rising Tides Initiative</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#impacts">Impacts</a></li>
+                <li><a href="#vulnerable">Vulnerable Communities</a></li>
+                <li><a href="#solutions">Solutions</a></li>
+                <li><a href="#get-involved">Get Involved</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <section id="problem">
+        <div class="container">
+            <div class="intro">
+                <h2>The Challenge: Sea Level Rise in South Florida</h2>
+                <p>South Florida is on the front lines of climate change, with sea level rise posing an immediate and significant threat to our coastal communities. The region is uniquely vulnerable due to its low elevation, porous limestone bedrock, and dense coastal development.</p>
+                
+                <div class="callout">
+                    <h3>Target Audience:</h3>
+                    <p>This resource is designed for South Florida residents, local business owners, community leaders, and policymakers who need practical information about how sea level rise is affecting our region and what can be done to adapt.</p>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="South Florida coastal flooding">
+                    </div>
+                    <div class="card-content">
+                        <h3>The Science Behind Sea Level Rise</h3>
+                        <p>Global warming is causing sea levels to rise through two main mechanisms: thermal expansion (as ocean water warms, it expands) and the melting of land-based ice sheets and glaciers.</p>
+                        <p>In South Florida, these global trends are compounded by local factors, including land subsidence (sinking) and the region's porous limestone foundation.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Historical sea level measurements">
+                    </div>
+                    <div class="card-content">
+                        <h3>Historical and Projected Rise</h3>
+                        <p>Sea levels in South Florida have risen about 8 inches since 1950. According to NOAA and the Southeast Florida Regional Climate Change Compact, we can expect:</p>
+                        <ul>
+                            <li>10-17 inches of additional rise by 2040</li>
+                            <li>21-54 inches by 2070</li>
+                            <li>40-136 inches by 2120</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid">
+                <div class="stat">
+                    <div class="stat-number">8"</div>
+                    <p>Sea level rise since 1950</p>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-number">5.5M</div>
+                    <p>South Florida residents living less than 4 feet above sea level</p>
+                </div>
+                
+                <div class="stat">
+                    <div class="stat-number">$1T</div>
+                    <p>Value of real estate at risk in South Florida by 2050</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="impacts" style="background-color: #f1f6fe;">
+        <div class="container">
+            <h2>Impact on Our Communities</h2>
+            <p>Sea level rise isn't just a future concern—it's affecting South Florida communities today through various mechanisms that will intensify over time.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Sunny day flooding in Miami Beach">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sunny Day Flooding</h3>
+                        <p>Even without rain, high tides now regularly cause flooding in low-lying areas of Miami Beach, Fort Lauderdale, and the Florida Keys.</p>
+                        <p>These "king tides" damage infrastructure, disrupt transportation, and impact businesses as saltwater inundates streets and sidewalks.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Saltwater intrusion diagram">
+                    </div>
+                    <div class="card-content">
+                        <h3>Saltwater Intrusion</h3>
+                        <p>Rising sea levels are pushing saltwater into South Florida's freshwater Biscayne Aquifer, threatening drinking water supplies for millions of residents.</p>
+                        <p>This issue is exacerbated by the region's porous limestone bedrock, which allows seawater to penetrate inland from below.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Property damage from flooding">
+                    </div>
+                    <div class="card-content">
+                        <h3>Property Values & Insurance</h3>
+                        <p>Properties in vulnerable areas are facing declining values, difficulty obtaining affordable insurance, and challenges securing mortgages.</p>
+                        <p>This "climate gentrification" is forcing many residents to relocate, altering neighborhood demographics and local economies.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Beach erosion in Florida">
+                    </div>
+                    <div class="card-content">
+                        <h3>Beach Erosion & Tourism</h3>
+                        <p>Florida's beaches are eroding at an accelerating rate, threatening the $100+ billion tourism industry that depends on pristine coastal environments.</p>
+                        <p>Higher sea levels allow storm surges to reach further inland, causing greater damage during hurricane season.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="callout warning">
+                <h3>Compounding Effects</h3>
+                <p>Sea level rise amplifies the impact of extreme weather events. Even a modest hurricane can cause significantly more flooding when starting from a higher baseline sea level.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="vulnerable">
+        <div class="container">
+            <h2>Vulnerable Communities</h2>
+            <p>While sea level rise affects all South Floridians, certain communities bear disproportionate burdens due to geographic, economic, and social factors.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Low-income housing near coast">
+                    </div>
+                    <div class="card-content">
+                        <h3>Low-Income Neighborhoods</h3>
+                        <p>Many lower-income communities lack the resources for flood prevention infrastructure or property elevation.</p>
+                        <p>These neighborhoods often have fewer green spaces to absorb floodwater and older drainage systems that cannot handle increased water volumes.</p>
+                        <p>Residents may not have the financial means to relocate or rebuild after flooding events.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Elderly residents during flooding">
+                    </div>
+                    <div class="card-content">
+                        <h3>Elderly Population</h3>
+                        <p>South Florida has a large elderly population, many living in coastal communities and on fixed incomes.</p>
+                        <p>Seniors may face challenges evacuating during emergencies and are more vulnerable to health impacts from flooding events.</p>
+                        <p>Rising insurance costs and property taxes can force elderly residents from homes they've lived in for decades.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Small business affected by flooding">
+                    </div>
+                    <div class="card-content">
+                        <h3>Small Businesses</h3>
+                        <p>Local businesses in flood-prone areas face increased operating costs, property damage, and interrupted operations.</p>
+                        <p>Many small businesses lack flood insurance or the capital needed to implement resilience measures.</p>
+                        <p>Repeated flooding can drive away customers and force businesses to close or relocate.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <h3>South Florida Vulnerability Map</h3>
+                    <p>Interactive map showing areas most at risk from sea level rise</p>
+                </div>
+            </div>
+            
+            <div class="callout danger">
+                <h3>Climate Gentrification</h3>
+                <p>As coastal properties face increasing flood risks, property values in higher-elevation areas are rising rapidly. This "climate gentrification" is displacing long-time residents of historically affordable neighborhoods like Little Haiti and Liberty City in Miami, which sit on higher ground.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="solutions" style="background-color: #f1f6fe;">
+        <div class="container">
+            <h2>Engineering Solutions & Adaptation Strategies</h2>
+            <p>While we can't stop sea level rise immediately, South Florida communities can implement a range of solutions to adapt to changing conditions and protect people, property, and ecosystems.</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Seawall and living shoreline">
+                    </div>
+                    <div class="card-content">
+                        <h3>Infrastructure Improvements</h3>
+                        <ul>
+                            <li>Installing pumping systems to remove floodwater from streets and neighborhoods</li>
+                            <li>Building seawalls and surge barriers to protect critical areas</li>
+                            <li>Elevating roads and critical infrastructure above projected flood levels</li>
+                            <li>Upgrading stormwater management systems with backflow preventers and increased capacity</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Nature-based solutions">
+                    </div>
+                    <div class="card-content">
+                        <h3>Nature-Based Solutions</h3>
+                        <ul>
+                            <li>Restoring mangroves and wetlands that act as natural buffers against storm surge</li>
+                            <li>Creating living shorelines that combine vegetation with structural elements</li>
+                            <li>Building artificial reefs to break wave energy before it reaches shore</li>
+                            <li>Expanding green spaces in urban areas to absorb stormwater</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Elevated home construction">
+                    </div>
+                    <div class="card-content">
+                        <h3>Building Adaptations</h3>
+                        <ul>
+                            <li>Elevating existing structures above base flood elevation</li>
+                            <li>Building new construction on pilings to allow water to flow underneath</li>
+                            <li>Installing flood vents to reduce pressure on foundations during floods</li>
+                            <li>Using flood-resistant building materials on lower floors</li>
+                            <li>Creating deployable flood barriers for doors and windows</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-image">
+                        <img src="/api/placeholder/600/400" alt="Community planning meeting">
+                    </div>
+                    <div class="card-content">
+                        <h3>Policy & Planning</h3>
+                        <ul>
+                            <li>Updating building codes to account for future sea level projections</li>
+                            <li>Creating special assessment districts to fund adaptation projects</li>
+                            <li>Developing managed retreat strategies for highly vulnerable areas</li>
+                            <li>Establishing revolving loan funds to help property owners implement resilience measures</li>
+                            <li>Integrating sea level rise projections into all infrastructure planning</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="callout success">
+                <h3>Success Story: Miami Beach's Pump Program</h3>
+                <p>Miami Beach has installed over 80 stormwater pumps and raised numerous roads, reducing flooding in previously vulnerable neighborhoods by up to 80%. While expensive ($500+ million), these investments are protecting billions in property value and preserving quality of life for residents.</p>
+            </div>
+            
+            <h3>Adaptation Timeline: A Phased Approach</h3>
+            
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>Short-Term (Now-2030)</h3>
+                        <ul>
+                            <li>Install backflow preventers on stormwater systems</li>
+                            <li>Raise critical infrastructure and roadways</li>
+                            <li>Implement flood monitoring systems</li>
+                            <li>Begin mangrove restoration projects</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3>Medium-Term (2030-2050)</h3>
+                        <ul>
+                            <li>Comprehensive seawall and surge barrier systems</li>
+                            <li>Large-scale stormwater improvements</li>
+                            <li>Transition to elevated construction in vulnerable areas</li>
+                            <li>Expand living shoreline initiatives</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3>Long-Term (2050-2100)</h3>
+                        <ul>
+                            <li>Implement managed retreat from most vulnerable areas</li>
+                            <li>Create floating infrastructure where appropriate</li>
+                            <li>Comprehensive redesign of coastal urban areas</li>
+                            <li>Regional freshwater management solutions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="get-involved">
+        <div class="container">
+            <h2>Get Involved: Taking Action</h2>
+            <p>Addressing sea level rise requires action at all levels—from individual homeowners to regional governments. Here's how you can be part of the solution:</p>
+            
+            <div class="grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>For Homeowners</h3>
+                        <ul>
+                            <li>Assess your property's flood risk using FEMA maps and sea level projection tools</li>
+                            <li>Consider flood-proofing measures like elevating utilities and installing check valves</li>
+                            <li>Create a household flood emergency plan</li>
+                            <li>Plant native vegetation to reduce runoff and erosion</li>
+                            <li>Review and update your flood insurance coverage</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <h3>For Businesses</h3>
+                        <ul>
+                            <li>Develop business continuity plans for flooding events</li>
+                            <li>Implement resilience measures for facilities and equipment</li>
+                            <li>Consider flood risk in future location decisions</li
