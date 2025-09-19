@@ -3,835 +3,824 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rising Tides: South Florida's Sea Level Challenge</title>
+    <title>Project STEMkits - Bridging the Science Education Gap</title>
     <style>
         :root {
-            --primary: #1a73e8;
-            --secondary: #34a853;
-            --dark: #202124;
-            --light: #f8f9fa;
-            --danger: #ea4335;
-            --warning: #fbbc05;
-            --gray: #dadce0;
-            --ocean: #039be5;
+            --mint: #DDF4E7;
+            --sage: #67C090;
+            --teal: #26667F;
+            --navy: #124170;
+            --white: #FFFFFF;
+            --light-gray: #F8F9FA;
+            --shadow: rgba(18, 65, 112, 0.1);
+            --shadow-hover: rgba(18, 65, 112, 0.15);
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
         
         body {
-            color: #333;
+            background: linear-gradient(135deg, var(--mint) 0%, var(--white) 50%, var(--mint) 100%);
+            color: var(--navy);
             line-height: 1.6;
-            background-color: var(--light);
+            overflow-x: hidden;
         }
         
-        header {
-            background: linear-gradient(135deg, var(--ocean), #0277bd);
-            color: white;
-            text-align: center;
-            padding: 2rem 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .wave {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        /* Animated Background Elements */
+        .floating-icons {
+            position: fixed;
             width: 100%;
-            height: 50px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="white" fill-opacity="1" d="M0,192L48,186.7C96,181,192,171,288,160C384,149,480,139,576,149.3C672,160,768,192,864,197.3C960,203,1056,181,1152,149.3C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
-            background-size: 1440px 100%;
-            animation: wave 10s linear infinite;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        @keyframes wave {
-            0% {
-                background-position-x: 0;
+        .float-icon {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.1;
+            }
+            90% {
+                opacity: 0.1;
             }
             100% {
-                background-position-x: 1440px;
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
             }
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-        
+        /* Navigation */
         nav {
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            position: sticky;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px var(--shadow);
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
         
         .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
+            padding: 1rem 2rem;
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--ocean);
             display: flex;
             align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-decoration: none;
+            transition: transform 0.3s ease;
         }
         
-        .logo i {
-            margin-right: 0.5rem;
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--sage), var(--teal));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            font-size: 1.5rem;
         }
         
         .nav-links {
             display: flex;
             list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 1.5rem;
+            gap: 0.5rem;
         }
         
         .nav-links a {
             text-decoration: none;
-            color: var(--dark);
+            color: var(--navy);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
             font-weight: 500;
-            transition: color 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--mint), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .nav-links a:hover::before {
+            left: 100%;
         }
         
         .nav-links a:hover {
-            color: var(--ocean);
+            background: var(--mint);
+            transform: translateY(-2px);
         }
         
+        .nav-links a.active {
+            background: var(--sage);
+            color: white;
+        }
+        
+        /* Hero Section */
         .hero {
+            margin-top: 80px;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            text-align: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--mint) 0%, rgba(103, 192, 144, 0.1) 100%);
         }
         
         .hero-content {
+            max-width: 1200px;
+            padding: 4rem 2rem;
+            text-align: center;
             position: relative;
             z-index: 10;
         }
         
-        h1 {
-            font-size: 2.8rem;
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--navy), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--teal);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--sage), var(--teal));
+            color: white;
+            box-shadow: 0 4px 15px rgba(103, 192, 144, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(103, 192, 144, 0.4);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--navy);
+            border: 2px solid var(--sage);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--mint);
+            transform: translateY(-3px);
+        }
+        
+        /* Decorative Elements */
+        .hero-decoration {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sage), var(--teal));
+            opacity: 0.1;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .deco-1 {
+            top: -150px;
+            right: -150px;
+        }
+        
+        .deco-2 {
+            bottom: -150px;
+            left: -150px;
+            animation-delay: 2s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Mission Section */
+        .mission-section {
+            padding: 5rem 2rem;
+            background: white;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage), var(--teal));
+            border-radius: 2px;
+        }
+        
+        .mission-content {
+            background: linear-gradient(135deg, var(--mint) 0%, rgba(221, 244, 231, 0.3) 100%);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mission-content::before {
+            content: '🔬';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 5rem;
+            opacity: 0.1;
+            transform: rotate(-15deg);
+        }
+        
+        .mission-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--navy);
+            text-align: center;
+        }
+        
+        /* Features Grid */
+        .features {
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, white 0%, var(--mint) 100%);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sage), var(--teal));
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px var(--shadow-hover);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--sage), var(--teal));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            color: var(--navy);
             margin-bottom: 1rem;
         }
         
-        h2 {
-            font-size: 2rem;
-            margin: 2rem 0 1rem;
-            color: var(--ocean);
+        .feature-description {
+            color: var(--teal);
+            line-height: 1.6;
         }
         
-        h3 {
-            font-size: 1.5rem;
-            margin: 1.5rem 0 1rem;
-        }
-        
-        p {
-            margin-bottom: 1.2rem;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .button {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--primary);
+        /* Impact Stats */
+        .stats-section {
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
             color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            margin: 0.5rem;
-        }
-        
-        .button:hover {
-            background-color: #1557b0;
-        }
-        
-        .button.secondary {
-            background-color: var(--secondary);
-        }
-        
-        .button.secondary:hover {
-            background-color: #2d8d47;
-        }
-        
-        section {
-            padding: 3rem 0;
-        }
-        
-        .intro {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            transition: transform 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .card-image {
-            height: 250px;
+            position: relative;
             overflow: hidden;
         }
         
-        .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .card:hover .card-image img {
-            transform: scale(1.05);
-        }
-        
-        .card-content {
-            padding: 1.5rem;
-        }
-        
-        .grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
         }
         
-        .stat {
+        .stat-item {
             text-align: center;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease;
         }
         
         .stat-number {
             font-size: 3rem;
-            font-weight: bold;
-            color: var(--ocean);
+            font-weight: 700;
+            color: var(--mint);
             margin-bottom: 0.5rem;
         }
         
-        .callout {
-            background-color: rgba(26, 115, 232, 0.1);
-            border-left: 4px solid var(--primary);
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 0 4px 4px 0;
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
         
-        .callout.warning {
-            background-color: rgba(251, 188, 5, 0.1);
-            border-left-color: var(--warning);
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 2rem;
+            background: white;
+            text-align: center;
         }
         
-        .callout.danger {
-            background-color: rgba(234, 67, 53, 0.1);
-            border-left-color: var(--danger);
+        .cta-content {
+            background: linear-gradient(135deg, var(--mint) 0%, rgba(103, 192, 144, 0.1) 100%);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            box-shadow: 0 10px 40px var(--shadow);
         }
         
-        .callout.success {
-            background-color: rgba(52, 168, 83, 0.1);
-            border-left-color: var(--secondary);
-        }
-        
-        .timeline {
-            position: relative;
-            max-width: 1200px;
-            margin: 2rem auto;
-        }
-        
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 6px;
-            background-color: var(--gray);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -3px;
-        }
-        
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-        }
-        
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            right: -17px;
-            background-color: white;
-            border: 4px solid var(--ocean);
-            top: 15px;
-            border-radius: 50%;
-            z-index: 1;
-        }
-        
-        .left {
-            left: 0;
-        }
-        
-        .right {
-            left: 50%;
-        }
-        
-        .right::after {
-            left: -16px;
-        }
-        
-        .timeline-content {
-            padding: 20px 30px;
-            background-color: white;
-            position: relative;
-            border-radius: 6px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .timeline-content h3 {
-            margin-top: 0;
-        }
-        
-        .accordion {
+        .cta-title {
+            font-size: 2.5rem;
+            color: var(--navy);
             margin-bottom: 1rem;
         }
         
-        .accordion-item {
-            margin-bottom: 0.5rem;
+        .cta-text {
+            font-size: 1.2rem;
+            color: var(--teal);
+            margin-bottom: 2rem;
         }
         
-        .accordion-header {
-            padding: 1rem;
-            background-color: white;
-            cursor: pointer;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .accordion-header:hover {
-            background-color: #f1f3f4;
-        }
-        
-        .accordion-content {
-            padding: 1rem;
-            background-color: white;
-            border-radius: 0 0 4px 4px;
-            margin-top: -5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            display: none;
-        }
-        
-        .show {
-            display: block;
-        }
-        
+        /* Footer */
         footer {
-            background-color: var(--dark);
+            background: var(--navy);
             color: white;
-            padding: 3rem 0;
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
         }
         
-        .footer-grid {
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sage), var(--teal), var(--sage));
+            animation: gradient-shift 3s ease infinite;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
         
-        .footer-links h3 {
-            margin-top: 0;
-            color: white;
+        .footer-section h3 {
+            color: var(--mint);
+            margin-bottom: 1rem;
         }
         
-        .footer-links ul {
+        .footer-section ul {
             list-style: none;
         }
         
-        .footer-links li {
+        .footer-section li {
             margin-bottom: 0.5rem;
         }
         
-        .footer-links a {
-            color: var(--gray);
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
         
-        .footer-links a:hover {
-            color: white;
+        .footer-section a:hover {
+            color: var(--mint);
         }
         
-        .social-links {
+        .social-icons {
             display: flex;
             gap: 1rem;
             margin-top: 1rem;
         }
         
-        .social-links a {
-            display: inline-block;
+        .social-icon {
             width: 40px;
             height: 40px;
-            background-color: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            transition: background-color 0.3s;
-        }
-        
-        .social-links a:hover {
-            background-color: rgba(255,255,255,0.2);
-        }
-        
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.1);
-            margin-top: 2rem;
-            padding-top: 2rem;
-            text-align: center;
-            color: var(--gray);
-        }
-        
-        .cta {
-            background: linear-gradient(135deg, var(--primary), #7c4dff);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-        }
-        
-        .map-container {
-            height: 400px;
-            margin: 2rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        
-        .map-placeholder {
-            background-color: #e0e0e0;
-            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #666;
+            transition: all 0.3s ease;
         }
         
+        .social-icon:hover {
+            background: var(--sage);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .timeline::after {
-                left: 31px;
-            }
-            
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-            
-            .timeline-item::after {
-                left: 15px;
-            }
-            
-            .left::after, .right::after {
-                left: 15px;
-            }
-            
-            .right {
-                left: 0%;
-            }
-            
-            .nav-container {
-                flex-direction: column;
+            .hero h1 {
+                font-size: 2.5rem;
             }
             
             .nav-links {
-                margin-top: 1rem;
+                display: none;
             }
             
-            .nav-links li {
-                margin: 0 0.5rem;
+            .mobile-menu-btn {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: var(--navy);
+                cursor: pointer;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container hero">
-            <div class="hero-content">
-                <h1>Rising Tides: South Florida's Sea Level Challenge</h1>
-                <p class="subtitle">Understanding the impact of sea level rise on our communities and what we can do about it</p>
-                <a href="#solutions" class="button">Explore Solutions</a>
-                <a href="#get-involved" class="button secondary">Get Involved</a>
-            </div>
-        </div>
-        <div class="wave"></div>
-    </header>
+    <!-- Floating Background Icons -->
+    <div class="floating-icons">
+        <span class="float-icon" style="left: 10%; animation-delay: 0s;">🧬</span>
+        <span class="float-icon" style="left: 20%; animation-delay: 3s;">⚗️</span>
+        <span class="float-icon" style="left: 30%; animation-delay: 6s;">🔬</span>
+        <span class="float-icon" style="left: 40%; animation-delay: 9s;">🧪</span>
+        <span class="float-icon" style="left: 50%; animation-delay: 12s;">🔭</span>
+        <span class="float-icon" style="left: 60%; animation-delay: 15s;">⚛️</span>
+        <span class="float-icon" style="left: 70%; animation-delay: 18s;">🌱</span>
+        <span class="float-icon" style="left: 80%; animation-delay: 21s;">💻</span>
+        <span class="float-icon" style="left: 90%; animation-delay: 24s;">🔧</span>
+    </div>
     
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">
-                <span>🌊 Rising Tides Initiative</span>
-            </div>
+            <a href="#home" class="logo">
+                <div class="logo-icon">🚀</div>
+                Project STEMkits
+            </a>
+            <button class="mobile-menu-btn">☰</button>
             <ul class="nav-links">
-                <li><a href="#problem">The Problem</a></li>
-                <li><a href="#impacts">Impacts</a></li>
-                <li><a href="#vulnerable">Vulnerable Communities</a></li>
-                <li><a href="#solutions">Solutions</a></li>
-                <li><a href="#get-involved">Get Involved</a></li>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#team">Meet Our Team</a></li>
+                <li><a href="#catalog">Catalog</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#partners">Partners</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact Us</a></li>
             </ul>
         </div>
     </nav>
     
-    <section id="problem">
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-decoration deco-1"></div>
+        <div class="hero-decoration deco-2"></div>
+        <div class="hero-content">
+            <h1>Project STEMkits</h1>
+            <p class="hero-subtitle">Bridging the Science Education Gap Through Hands-On Learning</p>
+            <div class="hero-buttons">
+                <a href="#catalog" class="btn btn-primary">
+                    <span>🔬</span> Explore Our Kits
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    <span>📧</span> Get Started
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mission Section -->
+    <section class="mission-section">
         <div class="container">
-            <div class="intro">
-                <h2>The Challenge: Sea Level Rise in South Florida</h2>
-                <p>South Florida is on the front lines of climate change, with sea level rise posing an immediate and significant threat to our coastal communities. The region is uniquely vulnerable due to its low elevation, porous limestone bedrock, and dense coastal development.</p>
-                
-                <div class="callout">
-                    <h3>Target Audience:</h3>
-                    <p>This resource is designed for South Florida residents, local business owners, community leaders, and policymakers who need practical information about how sea level rise is affecting our region and what can be done to adapt.</p>
-                </div>
+            <h2 class="section-title">Our Mission</h2>
+            <div class="mission-content">
+                <p class="mission-text">
+                    During the COVID-19 pandemic, science was deemed a low priority and therefore not emphasized in the elementary school curriculum. This has caused severe deficiencies in the subject, especially in children who are now fourth, fifth, and sixth graders. Project STEMkits aims to work with teachers to mend these deficiencies through hands-on projects, a research-based teaching method.
+                </p>
             </div>
-            
-            <div class="grid">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://dims.apnews.com/dims4/default/1062c48/2147483647/strip/true/crop/3249x2166+0+0/resize/599x399!/quality/90/?url=https%3A%2F%2Fassets.apnews.com%2F2f%2F91%2F7acb992b075da85b609b0bfcf70e%2Fab09b2930ffa4ff886eff62142e2bdf0">
-                    </div>
-                    <div class="card-content">
-                        <h3>The Science Behind Sea Level Rise</h3>
-                        <p>Global warming is causing sea levels to rise through two main mechanisms: thermal expansion (as ocean water warms, it expands) and the melting of land-based ice sheets and glaciers.</p>
-                        <p>In South Florida, these global trends are compounded by local factors, including land subsidence (sinking) and the region's porous limestone foundation.</p>
-                    </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">What We Offer</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎒</div>
+                    <h3 class="feature-title">Ready-to-Use Kits</h3>
+                    <p class="feature-description">[Content to be added]</p>
                 </div>
                 
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://climatecenter.fsu.edu/images/topics/SLR_Projections-Eastern_Gulf_Coast.png">
-                    </div>
-                    <div class="card-content">
-                        <h3>Historical and Projected Rise</h3>
-                        <p>Sea levels in South Florida have risen about 8 inches since 1950. According to NOAA and the Southeast Florida Regional Climate Change Compact, we can expect:</p>
-                        <ul>
-                            <li>10-17 inches of additional rise by 2040</li>
-                            <li>21-54 inches by 2070</li>
-                            <li>40-136 inches by 2120</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="grid">
-                <div class="stat">
-                    <div class="stat-number">8"</div>
-                    <p>Sea level rise since 1950</p>
+                <div class="feature-card">
+                    <div class="feature-icon">👩‍🏫</div>
+                    <h3 class="feature-title">Teacher Support</h3>
+                    <p class="feature-description">[Content to be added]</p>
                 </div>
                 
-                <div class="stat">
-                    <div class="stat-number">5.5M</div>
-                    <p>South Florida residents living less than 4 feet above sea level</p>
+                <div class="feature-card">
+                    <div class="feature-icon">🌟</div>
+                    <h3 class="feature-title">Student Engagement</h3>
+                    <p class="feature-description">[Content to be added]</p>
                 </div>
                 
-                <div class="stat">
-                    <div class="stat-number">$1T</div>
-                    <p>Value of real estate at risk in South Florida by 2050</p>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Progress Tracking</h3>
+                    <p class="feature-description">[Content to be added]</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3 class="feature-title">Lab Equipment</h3>
+                    <p class="feature-description">[Content to be added]</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">Curriculum Aligned</h3>
+                    <p class="feature-description">[Content to be added]</p>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="impacts" style="background-color: #f1f6fe;">
+    <!-- Stats Section -->
+    <section class="stats-section">
         <div class="container">
-            <h2>Impact on Our Communities</h2>
-            <p>Sea level rise isn't just a future concern—it's affecting South Florida communities today through various mechanisms that will intensify over time.</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCGo4LlCTZuT7yK6CXHaOY3OERGvurck8o8g&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Sunny Day Flooding</h3>
-                        <p>Even without rain, high tides now regularly cause flooding in low-lying areas of Miami Beach, Fort Lauderdale, and the Florida Keys.</p>
-                        <p>These "king tides" damage infrastructure, disrupt transportation, and impact businesses as saltwater inundates streets and sidewalks.</p>
-                    </div>
+            <h2 class="section-title" style="color: white;">Our Impact</h2>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Students Reached</div>
                 </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGQXstY70ayHXjUQYqkc_JgI06AhZMWg105w&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Saltwater Intrusion</h3>
-                        <p>Rising sea levels are pushing saltwater into South Florida's freshwater Biscayne Aquifer, threatening drinking water supplies for millions of residents.</p>
-                        <p>This issue is made worse by the region's limestone bedrock, which allows seawater to penetrate inland from below.</p>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Partner Schools</div>
                 </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa37e3XIPMTIUnMUrQDZt7QJVNcJjpXawVwA&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Property Values & Insurance</h3>
-                        <p>Properties in vulnerable areas are facing declining values, difficulty obtaining affordable insurance, and challenges securing mortgages.</p>
-                        <p>This "climate gentrification" is forcing many residents to relocate, altering neighborhood demographics and local economies.</p>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">STEM Kits Delivered</div>
                 </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxR4NgrLW4eFeg0GSnUOZFogHfRNFNnPSQRg&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Beach Erosion & Tourism</h3>
-                        <p>Florida's beaches are eroding at an accelerating rate, threatening the $100+ billion tourism industry that depends on coastal environments.</p>
-                        <p>Higher sea levels allow storm surges to reach further inland, causing greater damage during hurricane season.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="callout warning">
-                <h3>Compounding Effects</h3>
-                <p>Sea level rise makes the impact of extreme weather events worse. Even a smaller hurricane can cause significantly more flooding when starting from a higher sea level.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="vulnerable">
-        <div class="container">
-            <h2>Vulnerable Communities</h2>
-            <p>While sea level rise affects all South Floridians, certain communities bear disproportionate burdens due to geographic, economic, and social factors.</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXGYMzkXinFeCojdG6pULwJih8n0AvhWB2EA&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Low-Income Neighborhoods</h3>
-                        <p>Many lower-income communities lack the resources for flood prevention infrastructure or property elevation.</p>
-                        <p>These neighborhoods often have fewer green spaces to absorb floodwater and older drainage systems that cannot handle increased water volumes.</p>
-                        <p>Residents may not have the financial means to relocate or rebuild after flooding events.</p>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://i.ytimg.com/vi/N8M4zi_3Lp0/maxresdefault.jpg">
-                    </div>
-                    <div class="card-content">
-                        <h3>Elderly Population</h3>
-                        <p>South Florida has a large elderly population, many living in coastal communities and on fixed incomes.</p>
-                        <p>Seniors may face challenges evacuating during emergencies and are more vulnerable to health impacts from flooding events.</p>
-                        <p>Rising insurance costs and property taxes can force elderly residents from homes they've lived in for decades.</p>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBXZ6sz6BxbCaPFZPyC2VH8Geh7ZgLATIoDQ&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Small Businesses</h3>
-                        <p>Local businesses in flood-prone areas face increased operating costs, property damage, and interrupted operations.</p>
-                        <p>Many small businesses lack flood insurance or the capital needed to implement resilience measures.</p>
-                        <p>Repeated flooding can drive away customers and force businesses to close or relocate.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <figure style="max-width: 100%; text-align: center;">
-                  <img 
-                    src="https://www.pewtrusts.org/-/media/data-visualizations/infographics/2018/04/fpc_florida_flood_risk_and_mitigation_fig1.png" 
-                    alt="Florida Flood Risk and Mitigation Map by Pew Trusts"
-                    style="width: 100%; height: auto; border: 1px solid #ccc; box-shadow: 0 2px 6px rgba(0,0,0,0.1);"
-                  >
-                  <figcaption style="font-size: 0.9em; color: #555; margin-top: 0.5em;">
-                    Source: <a href="https://www.pewtrusts.org/en/research-and-analysis/data-visualizations/2018/flood-prepared-communities/state-fact-sheets/florida" target="_blank" rel="noopener noreferrer">The Pew Charitable Trusts</a>
-                  </figcaption>
-                </figure>
-
-            
-            <div class="callout danger">
-                <h3>Climate Gentrification</h3>
-                <p>As coastal properties face increasing flood risks, property values in higher-elevation areas are rising rapidly. This "climate gentrification" is displacing long-time residents of historically affordable neighborhoods like Little Haiti and Liberty City in Miami, which sit on higher ground.</p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="solutions" style="background-color: #f1f6fe;">
-        <div class="container">
-            <h2>Engineering Solutions & Adaptation Strategies</h2>
-            <p>While we can't stop sea level rise immediately, South Florida communities can implement a range of solutions to adapt to changing conditions and protect people, property, and ecosystems.</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://miro.medium.com/v2/resize:fit:1400/0*ZoiMBLCUfbHpqkE2">
-                    </div>
-                    <div class="card-content">
-                        <h3>Infrastructure Improvements</h3>
-                        <ul>
-                            <li>We could install pumping systems to remove floodwater from streets and neighborhoods</li>
-                            <li>We could build seawalls and surge barriers to protect critical areas</li>
-                            <li>We could elevate roads and critical infrastructure above projected flood levels</li>
-                            <li>We could upgrade stormwater management systems with backflow preventers and increased capacity</li>
-                        </ul>
-                    </div>
-                </div>
-                f
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2590332222002135-gr2.jpg">
-                    </div>
-                    <div class="card-content">
-                        <h3>Nature-Based Solutions</h3>
-                        <ul>
-                            <li>We could restore mangroves and wetlands that act as natural buffers against storm surge</li>
-                            <li>We could create living shorelines that combine vegetation with structural elements</li>
-                            <li>We could build artificial reefs to break wave energy before it reaches shore</li>
-                            <li>We could expand green spaces in urban areas to absorb stormwater</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8ArL8UKRG9phrHuF9twSYofaj8vJBr9zQZw&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Building Adaptations</h3>
-                        <ul>
-                            <li>We could elevate existing structures above base flood elevation</li>
-                            <li>We could make new construction on pilings to allow water to flow underneath</li>
-                            <li>We could install flood vents to reduce pressure on foundations during floods</li>
-                            <li>We could use flood-resistant building materials on lower floors</li>
-                            <li>We could create deployable flood barriers for doors and windows</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-image">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyrs3G9fhKEBT2lEw1ZYe8glJJneaoaHjvxg&s">
-                    </div>
-                    <div class="card-content">
-                        <h3>Policy & Planning</h3>
-                        <ul>
-                            <li>We could update building codes to account for future sea level projections</li>
-                            <li>We could create special assessment districts to fund adaptation projects</li>
-                            <li>We could develop managed retreat strategies for highly vulnerable areas</li>
-                            <li>We could establisih revolving loan funds to help property owners implement resilience measures</li>
-                            <li>We could integrate sea level rise projections into all infrastructure planning</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="callout success">
-                <h3>Success Story: Miami Beach's Pump Program</h3>
-                <p>Miami Beach has installed over 80 stormwater pumps and raised numerous roads, reducing flooding in previously vulnerable neighborhoods by up to 80%. While expensive ($500+ million), these investments are protecting billions in property value and preserving quality of life for residents.</p>
-            </div>
-            
-            <h3>Adaptation Timeline: A Phased Approach</h3>
-            
-            <div class="timeline">
-                <div class="timeline-item left">
-                    <div class="timeline-content">
-                        <h3>Short-Term (Now-2030)</h3>
-                        <ul>
-                            <li>Install backflow preventers on stormwater systems</li>
-                            <li>Raise critical infrastructure and roadways</li>
-                            <li>Implement flood monitoring systems</li>
-                            <li>Begin mangrove restoration projects</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item right">
-                    <div class="timeline-content">
-                        <h3>Medium-Term (2030-2050)</h3>
-                        <ul>
-                            <li>Comprehensive seawall and surge barrier systems</li>
-                            <li>Large-scale stormwater improvements</li>
-                            <li>Transition to elevated construction in vulnerable areas</li>
-                            <li>Expand living shoreline initiatives</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline-item left">
-                    <div class="timeline-content">
-                        <h3>Long-Term (2050-2100)</h3>
-                        <ul>
-                            <li>Implement managed retreat from most vulnerable areas</li>
-                            <li>Create floating infrastructure where appropriate</li>
-                            <li>Comprehensive redesign of coastal urban areas</li>
-                            <li>Regional freshwater management solutions</li>
-                        </ul>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Teacher Satisfaction</div>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="get-involved">
+    <!-- CTA Section -->
+    <section class="cta-section">
         <div class="container">
-            <h2>Get Involved: Taking Action</h2>
-            <p>Addressing sea level rise requires action at all levels—from individual homeowners to regional governments. Here's how you can be part of the solution:</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <div class="card-content">
-                        <h3>For Homeowners</h3>
-                        <ul>
-                            <li>Assess your property's flood risk using FEMA maps and sea level projection tools</li>
-                            <li>Consider flood-proofing measures like elevating utilities and installing check valves</li>
-                            <li>Create a household flood emergency plan</li>
-                            <li>Plant native vegetation to reduce runoff and erosion</li>
-                            <li>Review and update your flood insurance coverage</li>
-                        </ul>
-                    </div>
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Science Education?</h2>
+                <p class="cta-text">Join us in bridging the STEM education gap for elementary students</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary">
+                        <span>🚀</span> Partner With Us
+                    </a>
+                    <a href="#catalog" class="btn btn-secondary">
+                        <span>📖</span> View Catalog
+                    </a>
                 </div>
-                
-                <div class="card">
-                    <div class="card-content">
-                        <h3>For Businesses</h3>
-                        <ul>
-                            <li>Develop business continuity plans for flooding events</li>
-                            <li>Implement resilience measures for facilities and equipment</li>
-                            <li>Consider flood risk in future location decisions</li>
-                            <li>Join local business resilience networks to share resources</li>
-                            <li>Explore sustainability certifications that include climate adaptation</li>
-                        </ul>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Project STEMkits</h3>
+                <p>Empowering the next generation through hands-on STEM education.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">📧</a>
+                    <a href="#" class="social-icon">🐦</a>
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">📷</a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#team">Meet Our Team</a></li>
+                    <li><a href="#catalog">Catalog</a></li>
+                    <li><a href="#events">Events</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#resources">Teaching Resources</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#partners">Partners</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📍 [Address to be added]</li>
+                    <li>📧 [Email to be added]</li>
+                    <li>📞 [Phone to be added]</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Project STEMkits. All rights reserved. | Bridging the Science Education Gap</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+        
+        // Add active class to nav links on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Mobile menu toggle (basic implementation)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.background = 'white';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.padding = '1rem';
+                navLinks.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+            });
+        }
+    </script>
+</body>
+</html>
