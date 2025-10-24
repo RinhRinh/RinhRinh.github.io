@@ -3,824 +3,834 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project STEMkits - Bridging the Science Education Gap</title>
+    <title>Project STEMkits - Empowering Elementary Science Education</title>
     <style>
-        :root {
-            --mint: #DDF4E7;
-            --sage: #67C090;
-            --teal: #26667F;
-            --navy: #124170;
-            --white: #FFFFFF;
-            --light-gray: #F8F9FA;
-            --shadow: rgba(18, 65, 112, 0.1);
-            --shadow-hover: rgba(18, 65, 112, 0.15);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, var(--mint) 0%, var(--white) 50%, var(--mint) 100%);
-            color: var(--navy);
-            line-height: 1.6;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #2d3748;
+            background-color: #ffffff;
         }
-        
-        /* Animated Background Elements */
-        .floating-icons {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        .float-icon {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.1;
-            animation: float 20s infinite ease-in-out;
-        }
-        
-        @keyframes float {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.1;
-            }
-            90% {
-                opacity: 0.1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        /* Navigation */
-        nav {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px var(--shadow);
-            position: fixed;
-            width: 100%;
+
+        /* Header */
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
             top: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        
-        .nav-container {
-            max-width: 1400px;
+
+        .header-container {
+            max-width: 1280px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
+            padding: 0 20px;
         }
-        
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+        }
+
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.5rem;
+            gap: 12px;
+            font-size: 24px;
             font-weight: 700;
-            color: var(--navy);
+            color: #059669;
             text-decoration: none;
-            transition: transform 0.3s ease;
         }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-        
+
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--sage), var(--teal));
-            border-radius: 50%;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 0.75rem;
-            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
         }
-        
+
+        .donate-header-btn {
+            padding: 10px 24px;
+            background-color: #059669;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .donate-header-btn:hover {
+            background-color: #047857;
+        }
+
+        nav {
+            background-color: #f8fafb;
+            border-top: 1px solid #e2e8f0;
+        }
+
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 0.5rem;
+            gap: 4px;
+            padding: 0;
+            overflow-x: auto;
         }
-        
-        .nav-links a {
+
+        .nav-links li a {
+            display: block;
+            padding: 14px 20px;
+            color: #4a5568;
             text-decoration: none;
-            color: var(--navy);
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            font-size: 14px;
             font-weight: 500;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
-        
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, var(--mint), transparent);
-            transition: left 0.5s ease;
+
+        .nav-links li a:hover {
+            color: #059669;
+            background-color: #e6f7f1;
         }
-        
-        .nav-links a:hover::before {
-            left: 100%;
+
+        .nav-links li a.active {
+            color: #059669;
+            border-bottom: 2px solid #059669;
         }
-        
-        .nav-links a:hover {
-            background: var(--mint);
-            transform: translateY(-2px);
-        }
-        
-        .nav-links a.active {
-            background: var(--sage);
-            color: white;
-        }
-        
+
         /* Hero Section */
         .hero {
-            margin-top: 80px;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            padding: 60px 20px;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, var(--mint) 0%, rgba(103, 192, 144, 0.1) 100%);
         }
-        
-        .hero-content {
-            max-width: 1200px;
-            padding: 4rem 2rem;
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-container {
+            max-width: 1280px;
+            margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-highlight {
+            display: inline-block;
+            font-size: 56px;
+            font-weight: 700;
+            color: #059669;
+            margin: 30px 0;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 20px;
+            color: #4a5568;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background-color: #059669;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
+        }
+
+        .cta-button:hover {
+            background-color: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
+        }
+
+        .cta-button.secondary {
+            background-color: white;
+            color: #059669;
+            border: 2px solid #059669;
+        }
+
+        .cta-button.secondary:hover {
+            background-color: #ecfdf5;
+        }
+
+        /* Quick Links Section */
+        .quick-links-section {
+            max-width: 1280px;
+            margin: -40px auto 60px;
+            padding: 0 20px;
             position: relative;
             z-index: 10;
         }
-        
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, var(--navy), var(--teal));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: fadeInUp 1s ease;
+
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
         }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--teal);
-            margin-bottom: 3rem;
-            animation: fadeInUp 1s ease 0.2s both;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-        
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 50px;
+
+        .quick-link-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px 24px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
+            color: #2d3748;
+            border: 2px solid transparent;
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--sage), var(--teal));
-            color: white;
-            box-shadow: 0 4px 15px rgba(103, 192, 144, 0.3);
+
+        .quick-link-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: #10b981;
         }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(103, 192, 144, 0.4);
+
+        .quick-link-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
         }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--navy);
-            border: 2px solid var(--sage);
+
+        .quick-link-card h3 {
+            font-size: 20px;
+            color: #059669;
+            margin-bottom: 8px;
         }
-        
-        .btn-secondary:hover {
-            background: var(--mint);
-            transform: translateY(-3px);
+
+        .quick-link-card p {
+            font-size: 14px;
+            color: #718096;
         }
-        
-        /* Decorative Elements */
-        .hero-decoration {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--sage), var(--teal));
-            opacity: 0.1;
-            animation: pulse 4s ease-in-out infinite;
-        }
-        
-        .deco-1 {
-            top: -150px;
-            right: -150px;
-        }
-        
-        .deco-2 {
-            bottom: -150px;
-            left: -150px;
-            animation-delay: 2s;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        
+
         /* Mission Section */
         .mission-section {
-            padding: 5rem 2rem;
-            background: white;
-            position: relative;
+            max-width: 1280px;
+            margin: 80px auto;
+            padding: 0 20px;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+
         .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 16px;
             text-align: center;
-            font-size: 2.5rem;
-            color: var(--navy);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-            width: 100%;
         }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--sage), var(--teal));
-            border-radius: 2px;
-        }
-        
+
         .mission-content {
-            background: linear-gradient(135deg, var(--mint) 0%, rgba(221, 244, 231, 0.3) 100%);
-            border-radius: 20px;
-            padding: 3rem;
-            margin-top: 3rem;
-            box-shadow: 0 10px 30px var(--shadow);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .mission-content::before {
-            content: '🔬';
-            position: absolute;
-            top: -20px;
-            right: 20px;
-            font-size: 5rem;
-            opacity: 0.1;
-            transform: rotate(-15deg);
-        }
-        
-        .mission-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--navy);
-            text-align: center;
-        }
-        
-        /* Features Grid */
-        .features {
-            padding: 5rem 2rem;
-            background: linear-gradient(180deg, white 0%, var(--mint) 100%);
-        }
-        
-        .feature-grid {
+            background-color: #f8fafb;
+            border-radius: 12px;
+            padding: 50px;
+            border-left: 4px solid #059669;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
         }
-        
-        .feature-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 5px 20px var(--shadow);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+
+        .mission-text h2 {
+            font-size: 28px;
+            color: #059669;
+            margin-bottom: 20px;
         }
-        
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sage), var(--teal));
+
+        .mission-text p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #4a5568;
         }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px var(--shadow-hover);
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--sage), var(--teal));
-            border-radius: 15px;
+
+        .mission-image {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: 12px;
+            height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
+            font-size: 100px;
         }
-        
-        .feature-card:hover .feature-icon {
-            transform: rotate(10deg) scale(1.1);
+
+        /* Testimonial Section */
+        .testimonial-section {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            padding: 80px 20px;
         }
-        
-        .feature-title {
-            font-size: 1.3rem;
-            color: var(--navy);
-            margin-bottom: 1rem;
+
+        .testimonial-container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
-        
-        .feature-description {
-            color: var(--teal);
-            line-height: 1.6;
+
+        .testimonial-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-top: 40px;
         }
-        
-        /* Impact Stats */
-        .stats-section {
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+
+        .testimonial-quote {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #4a5568;
+            font-style: italic;
+            margin-bottom: 24px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .author-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            position: relative;
-            overflow: hidden;
+            font-size: 24px;
+            font-weight: bold;
         }
-        
-        .stats-grid {
+
+        .author-details h4 {
+            font-size: 18px;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .author-details p {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        /* Donate Section */
+        .donate-section {
+            max-width: 1280px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .donate-content {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-radius: 12px;
+            padding: 60px;
+            text-align: center;
+            color: white;
+        }
+
+        .donate-content h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        .donate-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .donation-uses {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
         }
-        
-        .stat-item {
-            text-align: center;
-            animation: fadeInUp 1s ease;
+
+        .donation-use {
+            background-color: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 8px;
         }
-        
-        .stat-number {
-            font-size: 3rem;
+
+        .donation-use-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .donation-use h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .donation-use p {
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .donate-btn-large {
+            display: inline-block;
+            padding: 18px 48px;
+            background-color: white;
+            color: #059669;
+            text-decoration: none;
+            border-radius: 8px;
             font-weight: 700;
-            color: var(--mint);
-            margin-bottom: 0.5rem;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        
-        .stat-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
+
+        .donate-btn-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
         }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 5rem 2rem;
-            background: white;
+
+        /* Great For Section */
+        .great-for-section {
+            max-width: 1280px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .great-for-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .great-for-card {
+            background-color: #f8fafb;
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .great-for-card:hover {
+            border-color: #10b981;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+        }
+
+        .great-for-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .great-for-card h3 {
+            font-size: 24px;
+            color: #1a202c;
+            margin-bottom: 12px;
+        }
+
+        .great-for-card p {
+            font-size: 15px;
+            color: #718096;
+        }
+
+        /* Recognition Section */
+        .recognition-section {
+            background-color: #f8fafb;
+            padding: 60px 20px;
             text-align: center;
         }
-        
-        .cta-content {
-            background: linear-gradient(135deg, var(--mint) 0%, rgba(103, 192, 144, 0.1) 100%);
-            border-radius: 30px;
-            padding: 4rem 2rem;
-            box-shadow: 0 10px 40px var(--shadow);
+
+        .recognition-container {
+            max-width: 800px;
+            margin: 0 auto;
         }
-        
-        .cta-title {
-            font-size: 2.5rem;
-            color: var(--navy);
-            margin-bottom: 1rem;
+
+        .recognition-badge {
+            display: inline-block;
+            background-color: white;
+            padding: 30px 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            margin-top: 30px;
         }
-        
-        .cta-text {
-            font-size: 1.2rem;
-            color: var(--teal);
-            margin-bottom: 2rem;
+
+        .recognition-icon {
+            font-size: 72px;
+            margin-bottom: 16px;
         }
-        
+
+        .recognition-badge h3 {
+            font-size: 22px;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .recognition-badge p {
+            font-size: 16px;
+            color: #718096;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .contact-content {
+            background-color: #f8fafb;
+            border-radius: 12px;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .contact-content h2 {
+            font-size: 36px;
+            color: #1a202c;
+            margin-bottom: 20px;
+        }
+
+        .contact-content p {
+            font-size: 18px;
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .contact-email {
+            display: inline-block;
+            font-size: 20px;
+            color: #059669;
+            font-weight: 600;
+            margin: 20px 0;
+            text-decoration: none;
+        }
+
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+
         /* Footer */
         footer {
-            background: var(--navy);
-            color: white;
-            padding: 4rem 2rem 2rem;
-            position: relative;
-            overflow: hidden;
+            background-color: #1a202c;
+            color: #a0aec0;
+            padding: 60px 20px 30px;
+            margin-top: 100px;
         }
-        
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--sage), var(--teal), var(--sage));
-            animation: gradient-shift 3s ease infinite;
-        }
-        
-        @keyframes gradient-shift {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
-        
-        .footer-content {
-            max-width: 1200px;
+
+        .footer-container {
+            max-width: 1280px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 40px;
+            margin-bottom: 40px;
         }
-        
+
         .footer-section h3 {
-            color: var(--mint);
-            margin-bottom: 1rem;
+            color: #ffffff;
+            font-size: 18px;
+            margin-bottom: 20px;
         }
-        
+
         .footer-section ul {
             list-style: none;
         }
-        
-        .footer-section li {
-            margin-bottom: 0.5rem;
+
+        .footer-section ul li {
+            margin-bottom: 12px;
         }
-        
+
         .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
+            color: #a0aec0;
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.2s;
         }
-        
+
         .footer-section a:hover {
-            color: var(--mint);
+            color: #10b981;
         }
-        
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-        
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-        
-        .social-icon:hover {
-            background: var(--sage);
-            transform: translateY(-3px);
-        }
-        
+
         .footer-bottom {
             text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
+            padding-top: 30px;
+            border-top: 1px solid #2d3748;
+            color: #718096;
         }
-        
-        /* Responsive */
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
+            .hero-content h1 {
+                font-size: 36px;
             }
-            
-            .nav-links {
-                display: none;
+
+            .mission-content {
+                grid-template-columns: 1fr;
+                padding: 30px;
             }
-            
-            .mobile-menu-btn {
-                display: block;
-                background: none;
-                border: none;
-                font-size: 1.5rem;
-                color: var(--navy);
-                cursor: pointer;
+
+            .donate-content {
+                padding: 40px 30px;
             }
-        }
-        
-        @media (min-width: 769px) {
-            .mobile-menu-btn {
-                display: none;
+
+            .donation-uses {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating Background Icons -->
-    <div class="floating-icons">
-        <span class="float-icon" style="left: 10%; animation-delay: 0s;">🧬</span>
-        <span class="float-icon" style="left: 20%; animation-delay: 3s;">⚗️</span>
-        <span class="float-icon" style="left: 30%; animation-delay: 6s;">🔬</span>
-        <span class="float-icon" style="left: 40%; animation-delay: 9s;">🧪</span>
-        <span class="float-icon" style="left: 50%; animation-delay: 12s;">🔭</span>
-        <span class="float-icon" style="left: 60%; animation-delay: 15s;">⚛️</span>
-        <span class="float-icon" style="left: 70%; animation-delay: 18s;">🌱</span>
-        <span class="float-icon" style="left: 80%; animation-delay: 21s;">💻</span>
-        <span class="float-icon" style="left: 90%; animation-delay: 24s;">🔧</span>
-    </div>
-    
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <a href="#home" class="logo">
-                <div class="logo-icon">🚀</div>
-                Project STEMkits
-            </a>
-            <button class="mobile-menu-btn">☰</button>
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#team">Meet Our Team</a></li>
-                <li><a href="#catalog">Catalog</a></li>
-                <li><a href="#events">Events</a></li>
-                <li><a href="#resources">Resources</a></li>
-                <li><a href="#partners">Partners</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
+    <header>
+        <div class="header-container">
+            <div class="top-bar">
+                <a href="#home" class="logo">
+                    <div class="logo-icon">PS</div>
+                    <span>Project STEMkits</span>
+                </a>
+                <a href="#donate" class="donate-header-btn">Donate Today</a>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#catalog">Catalog</a></li>
+                    <li><a href="#team">Our Team</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
-    
-    <!-- Hero Section -->
+    </header>
+
     <section class="hero" id="home">
-        <div class="hero-decoration deco-1"></div>
-        <div class="hero-decoration deco-2"></div>
-        <div class="hero-content">
-            <h1>Project STEMkits</h1>
-            <p class="hero-subtitle">Bridging the Science Education Gap Through Hands-On Learning</p>
-            <div class="hero-buttons">
-                <a href="#catalog" class="btn btn-primary">
-                    <span>🔬</span> Explore Our Kits
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <span>📧</span> Get Started
-                </a>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Mission Section -->
-    <section class="mission-section">
-        <div class="container">
-            <h2 class="section-title">Our Mission</h2>
-            <div class="mission-content">
-                <p class="mission-text">
-                    During the COVID-19 pandemic, science was deemed a low priority and therefore not emphasized in the elementary school curriculum. This has caused severe deficiencies in the subject, especially in children who are now fourth, fifth, and sixth graders. Project STEMkits aims to work with teachers to mend these deficiencies through hands-on projects, a research-based teaching method.
-                </p>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">What We Offer</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎒</div>
-                    <h3 class="feature-title">Ready-to-Use Kits</h3>
-                    <p class="feature-description">[Content to be added]</p>
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Empowering Elementary Science Education</h1>
+                <p>Hands-on STEM learning kits designed to bridge educational gaps and inspire the next generation of scientists and innovators.</p>
+                <div class="stat-highlight">
+                    2500+
+                    <span class="stat-label">Students Served</span>
                 </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">👩‍🏫</div>
-                    <h3 class="feature-title">Teacher Support</h3>
-                    <p class="feature-description">[Content to be added]</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🌟</div>
-                    <h3 class="feature-title">Student Engagement</h3>
-                    <p class="feature-description">[Content to be added]</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3 class="feature-title">Progress Tracking</h3>
-                    <p class="feature-description">[Content to be added]</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🔬</div>
-                    <h3 class="feature-title">Lab Equipment</h3>
-                    <p class="feature-description">[Content to be added]</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📚</div>
-                    <h3 class="feature-title">Curriculum Aligned</h3>
-                    <p class="feature-description">[Content to be added]</p>
+                <div class="cta-buttons">
+                    <a href="#donate" class="cta-button">Donate Today</a>
+                    <a href="#contact" class="cta-button secondary">Get Involved</a>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Stats Section -->
-    <section class="stats-section">
-        <div class="container">
-            <h2 class="section-title" style="color: white;">Our Impact</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Students Reached</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Partner Schools</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100+</div>
-                    <div class="stat-label">STEM Kits Delivered</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">95%</div>
-                    <div class="stat-label">Teacher Satisfaction</div>
+
+    <section class="quick-links-section">
+        <div class="quick-links-grid">
+            <a href="#donate" class="quick-link-card">
+                <div class="quick-link-icon">💚</div>
+                <h3>Donate Today</h3>
+                <p>Support our mission</p>
+            </a>
+            <a href="#catalog" class="quick-link-card">
+                <div class="quick-link-icon">📚</div>
+                <h3>Our Catalog</h3>
+                <p>Browse STEM kits</p>
+            </a>
+            <a href="#team" class="quick-link-card">
+                <div class="quick-link-icon">👥</div>
+                <h3>Our Team</h3>
+                <p>Meet the people</p>
+            </a>
+            <a href="#features" class="quick-link-card">
+                <div class="quick-link-icon">⭐</div>
+                <h3>Features</h3>
+                <p>What we offer</p>
+            </a>
+            <a href="#events" class="quick-link-card">
+                <div class="quick-link-icon">📅</div>
+                <h3>Events</h3>
+                <p>Join us</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="mission-section" id="mission">
+        <h2 class="section-title">Our Mission</h2>
+        <div class="mission-content">
+            <div class="mission-text">
+                <p>During the COVID-19 pandemic, science was deemed a low priority and therefore not emphasized in the elementary school curriculum. This has caused severe deficiencies in the subject, especially in children who are now fourth, fifth, and sixth graders. Project STEMkits aims to work with teachers to mend these deficiencies through hands-on projects, a research-based teaching method.</p>
+            </div>
+            <div class="mission-image">🔬</div>
+        </div>
+    </section>
+
+    <section class="testimonial-section">
+        <div class="testimonial-container">
+            <h2 class="section-title">Hear What Teachers Say</h2>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"The benefits of Julianna's involvement have been immeasurable. By helping to integrate these STEM kits into our curriculum, she has made science more hands-on and interactive, which has significantly increased student engagement and curiosity. The students are now more excited about science and are developing essential skills in problem-solving, teamwork, and creativity."</p>
+                <div class="testimonial-author">
+                    <div class="author-icon">MY</div>
+                    <div class="author-details">
+                        <h4>Mrs. Anayansi Young</h4>
+                        <p>5th Grade Spanish Immersion Teacher</p>
+                        <p>William H. Owen Elementary</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Ready to Transform Science Education?</h2>
-                <p class="cta-text">Join us in bridging the STEM education gap for elementary students</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">
-                        <span>🚀</span> Partner With Us
-                    </a>
-                    <a href="#catalog" class="btn btn-secondary">
-                        <span>📖</span> View Catalog
-                    </a>
+
+    <section class="donate-section" id="donate">
+        <div class="donate-content">
+            <h2>Donate Today</h2>
+            <p>Your generous donation helps us provide high-quality STEM education to elementary students who need it most. Every contribution makes a direct impact on children's learning experiences.</p>
+            
+            <div class="donation-uses">
+                <div class="donation-use">
+                    <div class="donation-use-icon">🧪</div>
+                    <h3>STEM Kits</h3>
+                    <p>Purchasing materials and supplies for hands-on science projects</p>
                 </div>
+                <div class="donation-use">
+                    <div class="donation-use-icon">👩‍🏫</div>
+                    <h3>Teacher Support</h3>
+                    <p>Training and resources for educators implementing our programs</p>
+                </div>
+                <div class="donation-use">
+                    <div class="donation-use-icon">📦</div>
+                    <h3>Distribution</h3>
+                    <p>Delivering kits to schools and community groups across the region</p>
+                </div>
+            </div>
+
+            <a href="#" class="donate-btn-large">Make a Donation</a>
+        </div>
+    </section>
+
+    <section class="great-for-section">
+        <h2 class="section-title">Great For...</h2>
+        <div class="great-for-grid">
+            <div class="great-for-card">
+                <div class="great-for-icon">🏫</div>
+                <h3>Schools</h3>
+                <p>Enhance your science curriculum with engaging, hands-on STEM activities</p>
+            </div>
+            <div class="great-for-card">
+                <div class="great-for-icon">🏠</div>
+                <h3>Home-school Groups</h3>
+                <p>Provide comprehensive science education with research-backed materials</p>
+            </div>
+            <div class="great-for-card">
+                <div class="great-for-icon">⚗️</div>
+                <h3>STEM Clubs</h3>
+                <p>Inspire young scientists with exciting projects and experiments</p>
             </div>
         </div>
     </section>
-    
-    <!-- Footer -->
+
+    <section class="recognition-section">
+        <div class="recognition-container">
+            <h2 class="section-title">Recognized Excellence</h2>
+            <p style="color: #4a5568; font-size: 17px; margin-top: 16px;">Our commitment to quality STEM education has been acknowledged by leading organizations</p>
+            <div class="recognition-badge">
+                <div class="recognition-icon">🏆</div>
+                <h3>Better Business Bureau Spark Jr. Award Recipient</h3>
+                <p>Recognized 2x by the Better Business Bureau</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-content">
+            <h2>Interested?</h2>
+            <p>Contact us at <a href="mailto:projectstemkits@gmail.com" class="contact-email">projectstemkits@gmail.com</a> for personalized information or fill out this form for a faster response. We would love to work with your students and cultivate their interest in STEM.</p>
+            <a href="#" class="cta-button">Fill Out Contact Form</a>
+        </div>
+    </section>
+
     <footer>
-        <div class="footer-content">
+        <div class="footer-container">
             <div class="footer-section">
                 <h3>Project STEMkits</h3>
-                <p>Empowering the next generation through hands-on STEM education.</p>
-                <div class="social-icons">
-                    <a href="#" class="social-icon">📧</a>
-                    <a href="#" class="social-icon">🐦</a>
-                    <a href="#" class="social-icon">📘</a>
-                    <a href="#" class="social-icon">📷</a>
-                </div>
+                <p>Empowering elementary science education through hands-on learning.</p>
+                <p style="margin-top: 16px;">2500+ Students Served</p>
             </div>
-            
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#team">Meet Our Team</a></li>
                     <li><a href="#catalog">Catalog</a></li>
+                    <li><a href="#team">Our Team</a></li>
+                    <li><a href="#features">Features</a></li>
                     <li><a href="#events">Events</a></li>
                 </ul>
             </div>
-            
             <div class="footer-section">
-                <h3>Resources</h3>
+                <h3>Get Involved</h3>
                 <ul>
-                    <li><a href="#resources">Teaching Resources</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#partners">Partners</a></li>
-                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#donate">Donate</a></li>
+                    <li><a href="#volunteer">Volunteer</a></li>
+                    <li><a href="#partner">Partner With Us</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
                 </ul>
             </div>
-            
             <div class="footer-section">
-                <h3>Contact</h3>
-                <ul>
-                    <li>📍 [Address to be added]</li>
-                    <li>📧 [Email to be added]</li>
-                    <li>📞 [Phone to be added]</li>
-                </ul>
+                <h3>Connect</h3>
+                <p>Email: projectstemkits@gmail.com</p>
+                <p style="margin-top: 12px;">BBB Spark Jr. Award Recipient</p>
             </div>
         </div>
-        
         <div class="footer-bottom">
-            <p>&copy; 2024 Project STEMkits. All rights reserved. | Bridging the Science Education Gap</p>
+            <p>&copy; 2025 Project STEMkits. All rights reserved.</p>
         </div>
     </footer>
-    
-    <script>
-        // Simple smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-        
-        // Add active class to nav links on scroll
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-links a');
-            
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').slice(1) === current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Mobile menu toggle (basic implementation)
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '100%';
-                navLinks.style.left = '0';
-                navLinks.style.right = '0';
-                navLinks.style.background = 'white';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.padding = '1rem';
-                navLinks.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
-            });
-        }
-    </script>
 </body>
 </html>
