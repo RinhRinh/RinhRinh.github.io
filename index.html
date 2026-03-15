@@ -1,836 +1,1040 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project STEMkits - Empowering Elementary Science Education</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #2d3748;
-            background-color: #ffffff;
-        }
-
-        /* Header */
-        header {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .header-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 24px;
-            font-weight: 700;
-            color: #059669;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-        .donate-header-btn {
-            padding: 10px 24px;
-            background-color: #059669;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-
-        .donate-header-btn:hover {
-            background-color: #047857;
-        }
-
-        nav {
-            background-color: #f8fafb;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 4px;
-            padding: 0;
-            overflow-x: auto;
-        }
-
-        .nav-links li a {
-            display: block;
-            padding: 14px 20px;
-            color: #4a5568;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-
-        .nav-links li a:hover {
-            color: #059669;
-            background-color: #e6f7f1;
-        }
-
-        .nav-links li a.active {
-            color: #059669;
-            border-bottom: 2px solid #059669;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            padding: 60px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .hero-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-content h1 {
-            font-size: 48px;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .hero-content p {
-            font-size: 18px;
-            color: #4a5568;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .stat-highlight {
-            display: inline-block;
-            font-size: 56px;
-            font-weight: 700;
-            color: #059669;
-            margin: 30px 0;
-        }
-
-        .stat-label {
-            display: block;
-            font-size: 20px;
-            color: #4a5568;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 14px 32px;
-            background-color: #059669;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.2);
-        }
-
-        .cta-button:hover {
-            background-color: #047857;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(5, 150, 105, 0.3);
-        }
-
-        .cta-button.secondary {
-            background-color: white;
-            color: #059669;
-            border: 2px solid #059669;
-        }
-
-        .cta-button.secondary:hover {
-            background-color: #ecfdf5;
-        }
-
-        /* Quick Links Section */
-        .quick-links-section {
-            max-width: 1280px;
-            margin: -40px auto 60px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .quick-links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-        }
-
-        .quick-link-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 30px 24px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-            text-decoration: none;
-            color: #2d3748;
-            border: 2px solid transparent;
-        }
-
-        .quick-link-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            border-color: #10b981;
-        }
-
-        .quick-link-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .quick-link-card h3 {
-            font-size: 20px;
-            color: #059669;
-            margin-bottom: 8px;
-        }
-
-        .quick-link-card p {
-            font-size: 14px;
-            color: #718096;
-        }
-
-        /* Mission Section */
-        .mission-section {
-            max-width: 1280px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1a202c;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .mission-content {
-            background-color: #f8fafb;
-            border-radius: 12px;
-            padding: 50px;
-            border-left: 4px solid #059669;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .mission-text h2 {
-            font-size: 28px;
-            color: #059669;
-            margin-bottom: 20px;
-        }
-
-        .mission-text p {
-            font-size: 17px;
-            line-height: 1.8;
-            color: #4a5568;
-        }
-
-        .mission-image {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            border-radius: 12px;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 100px;
-        }
-
-        /* Testimonial Section */
-        .testimonial-section {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-            padding: 80px 20px;
-        }
-
-        .testimonial-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .testimonial-card {
-            background-color: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            margin-top: 40px;
-        }
-
-        .testimonial-quote {
-            font-size: 18px;
-            line-height: 1.8;
-            color: #4a5568;
-            font-style: italic;
-            margin-bottom: 24px;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .author-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .author-details h4 {
-            font-size: 18px;
-            color: #1a202c;
-            margin-bottom: 4px;
-        }
-
-        .author-details p {
-            font-size: 14px;
-            color: #718096;
-        }
-
-        /* Donate Section */
-        .donate-section {
-            max-width: 1280px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-
-        .donate-content {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            border-radius: 12px;
-            padding: 60px;
-            text-align: center;
-            color: white;
-        }
-
-        .donate-content h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .donate-content p {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .donation-uses {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .donation-use {
-            background-color: rgba(255,255,255,0.15);
-            padding: 30px;
-            border-radius: 8px;
-        }
-
-        .donation-use-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .donation-use h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-
-        .donation-use p {
-            font-size: 15px;
-            margin: 0;
-        }
-
-        .donate-btn-large {
-            display: inline-block;
-            padding: 18px 48px;
-            background-color: white;
-            color: #059669;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 18px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        .donate-btn-large:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-        }
-
-        /* Great For Section */
-        .great-for-section {
-            max-width: 1280px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-
-        .great-for-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .great-for-card {
-            background-color: #f8fafb;
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s;
-        }
-
-        .great-for-card:hover {
-            border-color: #10b981;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-        }
-
-        .great-for-icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-
-        .great-for-card h3 {
-            font-size: 24px;
-            color: #1a202c;
-            margin-bottom: 12px;
-        }
-
-        .great-for-card p {
-            font-size: 15px;
-            color: #718096;
-        }
-
-        /* Recognition Section */
-        .recognition-section {
-            background-color: #f8fafb;
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        .recognition-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .recognition-badge {
-            display: inline-block;
-            background-color: white;
-            padding: 30px 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            margin-top: 30px;
-        }
-
-        .recognition-icon {
-            font-size: 72px;
-            margin-bottom: 16px;
-        }
-
-        .recognition-badge h3 {
-            font-size: 22px;
-            color: #1a202c;
-            margin-bottom: 8px;
-        }
-
-        .recognition-badge p {
-            font-size: 16px;
-            color: #718096;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            max-width: 1000px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-
-        .contact-content {
-            background-color: #f8fafb;
-            border-radius: 12px;
-            padding: 50px;
-            text-align: center;
-        }
-
-        .contact-content h2 {
-            font-size: 36px;
-            color: #1a202c;
-            margin-bottom: 20px;
-        }
-
-        .contact-content p {
-            font-size: 18px;
-            color: #4a5568;
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
-
-        .contact-email {
-            display: inline-block;
-            font-size: 20px;
-            color: #059669;
-            font-weight: 600;
-            margin: 20px 0;
-            text-decoration: none;
-        }
-
-        .contact-email:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #1a202c;
-            color: #a0aec0;
-            padding: 60px 20px 30px;
-            margin-top: 100px;
-        }
-
-        .footer-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .footer-section h3 {
-            color: #ffffff;
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-section a {
-            color: #a0aec0;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .footer-section a:hover {
-            color: #10b981;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #2d3748;
-            color: #718096;
-        }
-
-        @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 36px;
-            }
-
-            .mission-content {
-                grid-template-columns: 1fr;
-                padding: 30px;
-            }
-
-            .donate-content {
-                padding: 40px 30px;
-            }
-
-            .donation-uses {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sea Dive Adventure</title>
+<style>
+    * { box-sizing: border-box; }
+
+    body{
+        margin:0;
+        font-family: Arial, Helvetica, sans-serif;
+        color:white;
+        transition: background 0.8s ease;
+        background: linear-gradient(180deg, #0f3d63 0%, #0a2740 100%);
+    }
+
+    .wrapper{
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1{
+        margin-top:0;
+        margin-bottom:8px;
+    }
+
+    .subtitle{
+        color:#c9d8e6;
+        margin-bottom:20px;
+    }
+
+    .container{
+        display:flex;
+        gap:24px;
+        align-items:flex-start;
+    }
+
+    .panel, .side{
+        background: rgba(10,18,30,0.72);
+        border:1px solid rgba(180,220,255,0.12);
+        border-radius:16px;
+        padding:18px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .panel{
+        width:66%;
+    }
+
+    .side{
+        width:34%;
+    }
+
+    .stats{
+        display:grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap:12px;
+        margin-bottom:18px;
+    }
+
+    .stat{
+        background: rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:14px;
+        padding:12px;
+    }
+
+    .stat-label{
+        font-size:12px;
+        color:#9fb6ca;
+        text-transform:uppercase;
+        letter-spacing:0.6px;
+        margin-bottom:8px;
+    }
+
+    .stat-value{
+        font-size:26px;
+        font-weight:bold;
+    }
+
+    .controls, .mode-box, .rule-box, .success-box, .fail-box, .zone-box{
+        background: rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:14px;
+        padding:14px;
+        margin-bottom:16px;
+    }
+
+    .mode-buttons, .action-buttons, .badges{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+    }
+
+    button{
+        padding:10px 14px;
+        border:none;
+        border-radius:12px;
+        cursor:pointer;
+        background:#1d5f93;
+        color:white;
+        font-weight:bold;
+    }
+
+    button:hover{
+        filter:brightness(1.08);
+    }
+
+    button.secondary{
+        background:#4d6f8b;
+    }
+
+    button.outline{
+        background:transparent;
+        border:1px solid rgba(255,255,255,0.25);
+    }
+
+    button:disabled{
+        opacity:0.4;
+        cursor:not-allowed;
+    }
+
+    input[type="number"]{
+        padding:10px;
+        border-radius:10px;
+        border:1px solid rgba(255,255,255,0.2);
+        background:#0f1d2d;
+        color:white;
+        width:120px;
+    }
+
+    .inline{
+        display:flex;
+        flex-wrap:wrap;
+        gap:14px;
+        align-items:end;
+    }
+
+    .field label{
+        display:block;
+        margin-bottom:6px;
+        color:#c7d7e8;
+        font-size:14px;
+    }
+
+    .toggle{
+        display:flex;
+        align-items:center;
+        gap:8px;
+    }
+
+    .badge{
+        background: rgba(255,255,255,0.08);
+        border:1px solid rgba(255,255,255,0.1);
+        color:#e4eef8;
+        padding:8px 10px;
+        border-radius:999px;
+        font-size:13px;
+    }
+
+    .log{
+        background:#0a121d;
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:12px;
+        padding:12px;
+        height:360px;
+        overflow:auto;
+    }
+
+    .log-entry{
+        background: rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.06);
+        border-radius:10px;
+        padding:10px;
+        margin-bottom:10px;
+        line-height:1.45;
+    }
+
+    .life-card{
+        background: rgba(255,255,255,0.04);
+        border:1px solid rgba(255,255,255,0.08);
+        border-radius:12px;
+        padding:12px;
+        margin-bottom:10px;
+    }
+
+    .life-card a{
+        color:#ffffff;
+        text-decoration:none;
+        font-weight:bold;
+    }
+
+    .life-note{
+        margin-top:5px;
+        font-size:12px;
+        color:#a8bfd4;
+    }
+
+    .zone-title{
+        font-size:22px;
+        font-weight:bold;
+        margin-bottom:8px;
+    }
+
+    .zone-desc{
+        color:#c7d7e8;
+        line-height:1.5;
+    }
+
+    .success-box{
+        border-color: rgba(50,220,140,0.35);
+        background: rgba(15,90,45,0.28);
+    }
+
+    .fail-box{
+        border-color: rgba(255,80,80,0.35);
+        background: rgba(110,20,20,0.28);
+    }
+
+    .small{
+        color:#b8cade;
+        font-size:14px;
+        line-height:1.5;
+    }
+
+    .easter{
+        color:#ffe7a3;
+    }
+
+    @media (max-width: 1000px){
+        .container{
+            flex-direction:column;
+        }
+        .panel, .side{
+            width:100%;
+        }
+        .stats{
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
 </head>
 <body>
-    <header>
-        <div class="header-container">
-            <div class="top-bar">
-                <a href="#home" class="logo">
-                    <div class="logo-icon">PS</div>
-                    <span>Project STEMkits</span>
-                </a>
-                <a href="#donate" class="donate-header-btn">Donate Today</a>
-            </div>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#catalog">Catalog</a></li>
-                    <li><a href="#team">Our Team</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#events">Events</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#resources">Resources</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<div class="wrapper">
+    <h1>Sea Dive: Text Adventure</h1>
+    <div class="subtitle">
+        Descend through reefs, twilight waters, abyssal plains, and eventually the Mariana depths.
+    </div>
 
-    <section class="hero" id="home">
-        <div class="hero-container">
-            <div class="hero-content">
-                <h1>Empowering Elementary Science Education</h1>
-                <p>Hands-on STEM learning kits designed to bridge educational gaps and inspire the next generation of scientists and innovators.</p>
-                <div class="stat-highlight">
-                    2500+
-                    <span class="stat-label">Students Served</span>
+    <div class="container">
+        <div class="panel">
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">Current Depth</div>
+                    <div class="stat-value" id="depth">0 ft</div>
                 </div>
-                <div class="cta-buttons">
-                    <a href="#donate" class="cta-button">Donate Today</a>
-                    <a href="#contact" class="cta-button secondary">Get Involved</a>
+                <div class="stat">
+                    <div class="stat-label">Max Depth</div>
+                    <div class="stat-value" id="maxDepth">0 ft</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Elapsed Time</div>
+                    <div class="stat-value" id="time">0 min</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Pressure</div>
+                    <div class="stat-value" id="pressure">Surface</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Stop Progress</div>
+                    <div class="stat-value" id="stop">None</div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section class="quick-links-section">
-        <div class="quick-links-grid">
-            <a href="#donate" class="quick-link-card">
-                <div class="quick-link-icon">💚</div>
-                <h3>Donate Today</h3>
-                <p>Support our mission</p>
-            </a>
-            <a href="#catalog" class="quick-link-card">
-                <div class="quick-link-icon">📚</div>
-                <h3>Our Catalog</h3>
-                <p>Browse STEM kits</p>
-            </a>
-            <a href="#team" class="quick-link-card">
-                <div class="quick-link-icon">👥</div>
-                <h3>Our Team</h3>
-                <p>Meet the people</p>
-            </a>
-            <a href="#features" class="quick-link-card">
-                <div class="quick-link-icon">⭐</div>
-                <h3>Features</h3>
-                <p>What we offer</p>
-            </a>
-            <a href="#events" class="quick-link-card">
-                <div class="quick-link-icon">📅</div>
-                <h3>Events</h3>
-                <p>Join us</p>
-            </a>
-        </div>
-    </section>
-
-    <section class="mission-section" id="mission">
-        <h2 class="section-title">Our Mission</h2>
-        <div class="mission-content">
-            <div class="mission-text">
-                <p>During the COVID-19 pandemic, science was deemed a low priority and therefore not emphasized in the elementary school curriculum. This has caused severe deficiencies in the subject, especially in children who are now fourth, fifth, and sixth graders. Project STEMkits aims to work with teachers to mend these deficiencies through hands-on projects, a research-based teaching method.</p>
+            <div class="mode-box">
+                <div style="font-weight:bold; margin-bottom:10px;">Exploration Mode</div>
+                <div class="mode-buttons">
+                    <button id="modeScuba" onclick="switchMode('scuba')">Recreational Diver</button>
+                    <button id="modeTech" onclick="switchMode('tech')" class="outline" disabled>Geared-Up Human</button>
+                    <button id="modeSub" onclick="switchMode('sub')" class="outline" disabled>Submarine</button>
+                </div>
+                <div class="small" style="margin-top:10px;" id="modeDescription"></div>
             </div>
-            <div class="mission-image">🔬</div>
-        </div>
-    </section>
 
-    <section class="testimonial-section">
-        <div class="testimonial-container">
-            <h2 class="section-title">Hear What Teachers Say</h2>
-            <div class="testimonial-card">
-                <p class="testimonial-quote">"The benefits of Julianna's involvement have been immeasurable. By helping to integrate these STEM kits into our curriculum, she has made science more hands-on and interactive, which has significantly increased student engagement and curiosity. The students are now more excited about science and are developing essential skills in problem-solving, teamwork, and creativity."</p>
-                <div class="testimonial-author">
-                    <div class="author-icon">MY</div>
-                    <div class="author-details">
-                        <h4>Mrs. Anayansi Young</h4>
-                        <p>5th Grade Spanish Immersion Teacher</p>
-                        <p>William H. Owen Elementary</p>
+            <div class="controls">
+                <div class="inline">
+                    <div class="field">
+                        <label for="feet">Feet to move</label>
+                        <input id="feet" type="number" value="10" />
+                    </div>
+
+                    <div class="toggle" style="padding-bottom:10px;">
+                        <input type="checkbox" id="devMode" onchange="handleDevModeToggle()" />
+                        <label for="devMode">Dev Mode</label>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section class="donate-section" id="donate">
-        <div class="donate-content">
-            <h2>Donate Today</h2>
-            <p>Your generous donation helps us provide high-quality STEM education to elementary students who need it most. Every contribution makes a direct impact on children's learning experiences.</p>
-            
-            <div class="donation-uses">
-                <div class="donation-use">
-                    <div class="donation-use-icon">🧪</div>
-                    <h3>STEM Kits</h3>
-                    <p>Purchasing materials and supplies for hands-on science projects</p>
-                </div>
-                <div class="donation-use">
-                    <div class="donation-use-icon">👩‍🏫</div>
-                    <h3>Teacher Support</h3>
-                    <p>Training and resources for educators implementing our programs</p>
-                </div>
-                <div class="donation-use">
-                    <div class="donation-use-icon">📦</div>
-                    <h3>Distribution</h3>
-                    <p>Delivering kits to schools and community groups across the region</p>
+                <div class="action-buttons" style="margin-top:14px;">
+                    <button onclick="ascend()">Ascend</button>
+                    <button onclick="descend()" class="secondary">Descend</button>
+                    <button onclick="waitAction()" class="outline">Wait 1 min</button>
+                    <button onclick="resetGame()" class="outline">Reset</button>
                 </div>
             </div>
 
-            <a href="#" class="donate-btn-large">Make a Donation</a>
-        </div>
-    </section>
+            <div class="badges" id="badges"></div>
 
-    <section class="great-for-section">
-        <h2 class="section-title">Great For...</h2>
-        <div class="great-for-grid">
-            <div class="great-for-card">
-                <div class="great-for-icon">🏫</div>
-                <h3>Schools</h3>
-                <p>Enhance your science curriculum with engaging, hands-on STEM activities</p>
+            <div class="rule-box">
+                <div style="font-weight:bold; margin-bottom:8px;">Dive Log</div>
+                <div class="log" id="log"></div>
             </div>
-            <div class="great-for-card">
-                <div class="great-for-icon">🏠</div>
-                <h3>Home-school Groups</h3>
-                <p>Provide comprehensive science education with research-backed materials</p>
-            </div>
-            <div class="great-for-card">
-                <div class="great-for-icon">⚗️</div>
-                <h3>STEM Clubs</h3>
-                <p>Inspire young scientists with exciting projects and experiments</p>
-            </div>
-        </div>
-    </section>
 
-    <section class="recognition-section">
-        <div class="recognition-container">
-            <h2 class="section-title">Recognized Excellence</h2>
-            <p style="color: #4a5568; font-size: 17px; margin-top: 16px;">Our commitment to quality STEM education has been acknowledged by leading organizations</p>
-            <div class="recognition-badge">
-                <div class="recognition-icon">🏆</div>
-                <h3>Better Business Bureau Spark Jr. Award Recipient</h3>
-                <p>Recognized 2x by the Better Business Bureau</p>
+            <div id="failBox" class="fail-box" style="display:none;">
+                <div style="font-weight:bold; font-size:18px;">Dive failed</div>
+                <div class="small">Reset to try again, or turn on Dev Mode to ignore fatal checks and keep exploring.</div>
             </div>
-        </div>
-    </section>
 
-    <section class="contact-section" id="contact">
-        <div class="contact-content">
-            <h2>Interested?</h2>
-            <p>Contact us at <a href="mailto:projectstemkits@gmail.com" class="contact-email">projectstemkits@gmail.com</a> for personalized information or fill out this form for a faster response. We would love to work with your students and cultivate their interest in STEM.</p>
-            <a href="#" class="cta-button">Fill Out Contact Form</a>
+            <div id="successBox" class="success-box" style="display:none;">
+                <div style="font-weight:bold; font-size:18px;">Successful return to the surface</div>
+                <div class="small" id="successText" style="white-space:pre-line; margin-top:8px;"></div>
+            </div>
         </div>
-    </section>
 
-    <footer>
-        <div class="footer-container">
-            <div class="footer-section">
-                <h3>Project STEMkits</h3>
-                <p>Empowering elementary science education through hands-on learning.</p>
-                <p style="margin-top: 16px;">2500+ Students Served</p>
+        <div class="side">
+            <div class="zone-box">
+                <div style="font-size:12px; text-transform:uppercase; color:#9fb6ca; letter-spacing:0.6px;">Depth Band</div>
+                <div class="zone-title" id="zoneTitle">Sunlit shallows</div>
+                <div class="zone-desc" id="zoneDesc"></div>
             </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#catalog">Catalog</a></li>
-                    <li><a href="#team">Our Team</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#events">Events</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Get Involved</h3>
-                <ul>
-                    <li><a href="#donate">Donate</a></li>
-                    <li><a href="#volunteer">Volunteer</a></li>
-                    <li><a href="#partner">Partner With Us</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <p>Email: projectstemkits@gmail.com</p>
-                <p style="margin-top: 12px;">BBB Spark Jr. Award Recipient</p>
-            </div>
+
+            <div style="font-weight:bold; margin-bottom:10px;">What you might see here</div>
+            <div id="sealife"></div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Project STEMkits. All rights reserved.</p>
-        </div>
-    </footer>
+    </div>
+</div>
+
+<script>
+const MODES = {
+    scuba: {
+        name: "Recreational Diver",
+        intro: "Standard scuba gear. Safe for normal recreational diving only.",
+        maxDepth: 130,
+        maxAscent: 30,
+        maxDescent: 60,
+        safetyStopMinDepth: 15,
+        safetyStopMaxDepth: 20
+    },
+    tech: {
+        name: "Geared-Up Human",
+        intro: "Heavy technical gear, mixed gas support, and specialized training let you go much deeper.",
+        maxDepth: 1000,
+        maxAscent: 30,
+        maxDescent: 90,
+        safetyStopMinDepth: 20,
+        safetyStopMaxDepth: 30
+    },
+    sub: {
+        name: "Submarine",
+        intro: "A pressure-resistant submersible opens the hadal zone and the Mariana depths.",
+        maxDepth: 50000,
+        maxAscent: 1000,
+        maxDescent: 1500,
+        safetyStopMinDepth: 0,
+        safetyStopMaxDepth: 0
+    }
+};
+
+const zones = [
+    {
+        min:0, max:20,
+        title:"Sunlit shallows",
+        description:"Bright, warm, and full of reefs, grasses, and fast-moving coastal life.",
+        life:[
+            ["Clownfish","https://en.wikipedia.org/wiki/Clownfish"],
+            ["Parrotfish","https://en.wikipedia.org/wiki/Parrotfish"],
+            ["Green sea turtle","https://en.wikipedia.org/wiki/Green_sea_turtle"],
+            ["Jellyfish","https://en.wikipedia.org/wiki/Jellyfish"],
+            ["Sea anemone","https://en.wikipedia.org/wiki/Sea_anemone"],
+            ["Damselfish","https://en.wikipedia.org/wiki/Damselfish"],
+            ["Seahorse","https://en.wikipedia.org/wiki/Seahorse"],
+            ["Stingray","https://en.wikipedia.org/wiki/Stingray"]
+        ]
+    },
+    {
+        min:21, max:60,
+        title:"Reef slope",
+        description:"Corals thin out, the blue opens up, and larger hunters start to pass through.",
+        life:[
+            ["Butterflyfish","https://en.wikipedia.org/wiki/Butterflyfish"],
+            ["Moray eel","https://en.wikipedia.org/wiki/Moray_eel"],
+            ["Manta ray","https://en.wikipedia.org/wiki/Manta_ray"],
+            ["Octopus","https://en.wikipedia.org/wiki/Octopus"],
+            ["Barracuda","https://en.wikipedia.org/wiki/Barracuda"],
+            ["Triggerfish","https://en.wikipedia.org/wiki/Triggerfish"],
+            ["Hawksbill sea turtle","https://en.wikipedia.org/wiki/Hawksbill_sea_turtle"],
+            ["Reef squid","https://en.wikipedia.org/wiki/Bigfin_reef_squid"]
+        ]
+    },
+    {
+        min:61, max:130,
+        title:"Deep recreational zone",
+        description:"Light fades, pressure rises, and every minute feels more serious.",
+        life:[
+            ["Sea lion","https://en.wikipedia.org/wiki/Sea_lion"],
+            ["Tuna","https://en.wikipedia.org/wiki/Tuna"],
+            ["Reef shark","https://en.wikipedia.org/wiki/Reef_shark"],
+            ["Cobia","https://en.wikipedia.org/wiki/Cobia"],
+            ["Squid","https://en.wikipedia.org/wiki/Squid"],
+            ["Grouper","https://en.wikipedia.org/wiki/Grouper"],
+            ["Lionfish","https://en.wikipedia.org/wiki/Lionfish"],
+            ["Nurse shark","https://en.wikipedia.org/wiki/Nurse_shark"]
+        ]
+    },
+    {
+        min:131, max:330,
+        title:"Twilight zone",
+        description:"This mesopelagic band dims into blue-black water where bioluminescence starts to matter.",
+        life:[
+            ["Lanternfish","https://en.wikipedia.org/wiki/Lanternfish"],
+            ["Viperfish","https://en.wikipedia.org/wiki/Viperfish"],
+            ["Hatchetfish","https://en.wikipedia.org/wiki/Marine_hatchetfish"],
+            ["Siphonophore","https://en.wikipedia.org/wiki/Siphonophorae"],
+            ["Gulper eel","https://en.wikipedia.org/wiki/Gulper_eel"],
+            ["Barreleye","https://en.wikipedia.org/wiki/Barreleye"],
+            ["Dragonfish","https://en.wikipedia.org/wiki/Stomiidae"],
+            ["Comb jelly","https://en.wikipedia.org/wiki/Ctenophora"]
+        ]
+    },
+    {
+        min:331, max:3300,
+        title:"Midnight zone",
+        description:"Sunlight is gone. Creatures here rely on pressure tolerance, stillness, and flashes of living light.",
+        life:[
+            ["Anglerfish","https://en.wikipedia.org/wiki/Anglerfish"],
+            ["Giant squid","https://en.wikipedia.org/wiki/Giant_squid"],
+            ["Dumbo octopus","https://en.wikipedia.org/wiki/Grimpoteuthis"],
+            ["Goblin shark","https://en.wikipedia.org/wiki/Goblin_shark"],
+            ["Deep-sea dragonfish","https://en.wikipedia.org/wiki/Stomiidae"],
+            ["Frilled shark","https://en.wikipedia.org/wiki/Frilled_shark"],
+            ["Fangtooth","https://en.wikipedia.org/wiki/Fangtooth"],
+            ["Pelican eel","https://en.wikipedia.org/wiki/Gulper_eel"]
+        ]
+    },
+    {
+        min:3301, max:19685,
+        title:"Abyssal plain",
+        description:"A freezing dark seafloor of drifting sediment, strange invertebrates, and slow-moving predators.",
+        life:[
+            ["Sea cucumber","https://en.wikipedia.org/wiki/Sea_cucumber"],
+            ["Tripod fish","https://en.wikipedia.org/wiki/Tripod_fish"],
+            ["Brittle star","https://en.wikipedia.org/wiki/Brittle_star"],
+            ["Deep-sea sponge","https://en.wikipedia.org/wiki/Sponge"],
+            ["Grenadier","https://en.wikipedia.org/wiki/Rattail"],
+            ["Acorn worm","https://en.wikipedia.org/wiki/Acorn_worm"],
+            ["Basket star","https://en.wikipedia.org/wiki/Euryalida"],
+            ["Amphipod","https://en.wikipedia.org/wiki/Amphipoda"]
+        ]
+    },
+    {
+        min:19686, max:36000,
+        title:"Hadal trenches",
+        description:"The deepest trenches on Earth. Pressure becomes crushing and only the most specialized life persists.",
+        life:[
+            ["Snailfish","https://en.wikipedia.org/wiki/Snailfish"],
+            ["Amphipod","https://en.wikipedia.org/wiki/Amphipoda"],
+            ["Xenophyophore","https://en.wikipedia.org/wiki/Xenophyophore"],
+            ["Holothurian","https://en.wikipedia.org/wiki/Holothuroidea"],
+            ["Polychaete worm","https://en.wikipedia.org/wiki/Polychaete"],
+            ["Hadal cusk-eel","https://en.wikipedia.org/wiki/Cusk-eel"],
+            ["Sea spider","https://en.wikipedia.org/wiki/Pycnogonida"],
+            ["Microbial mats","https://en.wikipedia.org/wiki/Microbial_mat"]
+        ]
+    },
+    {
+        min:36001, max:1000000,
+        title:"Beyond the trench",
+        description:"You have gone beyond the intended game world. Dev Mode only territory begins here.",
+        life:[
+            ["Unmapped darkness",""],
+            ["Unknown pressure shadows",""],
+            ["Physics complaint department",""]
+        ]
+    }
+];
+
+let depth = 0;
+let maxDepth = 0;
+let time = 0;
+let stopMinutes = 0;
+let alive = true;
+let won = false;
+let modeKey = "scuba";
+let unlocks = { tech:false, sub:false };
+let triggeredDepthEggs = new Set();
+let enteredStopZone = false;
+
+function currentMode(){
+    return MODES[modeKey];
+}
+
+function devMode(){
+    return document.getElementById("devMode").checked;
+}
+
+function getFeet(){
+    const value = Number(document.getElementById("feet").value);
+    if(!Number.isFinite(value) || value < 0) return NaN;
+    return Math.round(value);
+}
+
+function log(msg, extraClass=""){
+    const box = document.getElementById("log");
+    const div = document.createElement("div");
+    div.className = "log-entry" + (extraClass ? " " + extraClass : "");
+    div.textContent = msg;
+    box.prepend(div);
+}
+
+function getZone(d){
+    for(const z of zones){
+        if(d >= z.min && d <= z.max) return z;
+    }
+    return zones[zones.length - 1];
+}
+
+function getPressureLabel(d){
+    if(d === 0) return "Surface";
+    if(d <= 20) return "Very light";
+    if(d <= 60) return "Building";
+    if(d <= 130) return "Heavy";
+    if(d <= 330) return "Serious";
+    if(d <= 3300) return "Extreme";
+    return "Crushing";
+}
+
+function getBackground(d){
+    if (d <= 20) return "linear-gradient(180deg, #0f3d63 0%, #0a2740 100%)";
+    if (d <= 60) return "linear-gradient(180deg, #0a2740 0%, #081d31 100%)";
+    if (d <= 130) return "linear-gradient(180deg, #081d31 0%, #061525 100%)";
+    if (d <= 330) return "linear-gradient(180deg, #061525 0%, #040d17 100%)";
+    if (d <= 3300) return "linear-gradient(180deg, #040d17 0%, #02070d 100%)";
+    return "linear-gradient(180deg, #01040a 0%, #000000 100%)";
+}
+
+function requiredSafetyStop(){
+    if(modeKey === "sub") return 0;
+    if(modeKey === "tech"){
+        if(maxDepth < 100) return 0;
+        if(maxDepth < 300) return 5;
+        return 10;
+    }
+    if(maxDepth < 40) return 0;
+    if(maxDepth >= 100) return 5;
+    return 3;
+}
+
+function educationalMessage(){
+    const mode = currentMode();
+    const lines = [
+        `- Keep ascent rate at or below ${mode.maxAscent} ft/min. Rising too fast can lead to expanding gas injuries and decompression sickness.`,
+        `- Keep descent rate at or below ${mode.maxDescent} ft/min. Dropping too quickly can cause loss of control, equalization problems, and panic.`,
+        modeKey === "sub"
+            ? "- In submarine mode, the hull replaces diver decompression risk, but crush depth still matters."
+            : `- If your dive is deep enough, pause in the stop band before surfacing. In this mode that is ${mode.safetyStopMinDepth}-${mode.safetyStopMaxDepth} ft for several minutes depending on your depth.`,
+        `- Do not exceed the mode depth ceiling of ${mode.maxDepth.toLocaleString()} ft unless Dev Mode is enabled.`,
+        !devMode() ? "- Normal play is capped at 36,000 ft, the Mariana target depth for this game." : "- Dev Mode allows exploration beyond the Mariana target depth.",
+        "- This game is simplified. Real diving needs training, gas planning, buddy procedures, environment checks, and proper decompression guidance."
+    ];
+    return lines.join("\n");
+}
+
+function effectiveUnlocks(){
+    if(devMode()) return { tech:true, sub:true };
+    return { ...unlocks };
+}
+
+function updateBadges(){
+    const mode = currentMode();
+    const badges = document.getElementById("badges");
+    badges.innerHTML = "";
+
+    const items = [
+        `Mode depth cap: ${mode.maxDepth.toLocaleString()} ft`,
+        `Max ascent: ${mode.maxAscent} ft/min`,
+        `Max descent: ${mode.maxDescent} ft/min`,
+        modeKey === "sub" ? `No diver safety stop` : `Stop zone: ${mode.safetyStopMinDepth}-${mode.safetyStopMaxDepth} ft`,
+        `Mariana target: 36,000 ft`
+    ];
+
+    for(const text of items){
+        const span = document.createElement("div");
+        span.className = "badge";
+        span.textContent = text;
+        badges.appendChild(span);
+    }
+}
+
+function updateLife(){
+    const area = document.getElementById("sealife");
+    const zone = getZone(depth);
+    area.innerHTML = "";
+
+    document.getElementById("zoneTitle").textContent = zone.title;
+    document.getElementById("zoneDesc").textContent = zone.description;
+
+    for(const item of zone.life){
+        const card = document.createElement("div");
+        card.className = "life-card";
+
+        if(item[1]){
+            card.innerHTML = `
+                <a href="${item[1]}" target="_blank" rel="noreferrer">${item[0]}</a>
+                <div class="life-note">Open Wikipedia</div>
+            `;
+        } else {
+            card.innerHTML = `
+                <div style="font-weight:bold;">${item[0]}</div>
+                <div class="life-note">No charted reference available</div>
+            `;
+        }
+
+        area.appendChild(card);
+    }
+
+    const extras = getRareSideEggs(depth);
+    for(const item of extras){
+        const card = document.createElement("div");
+        card.className = "life-card";
+        if(item.url){
+            card.innerHTML = `
+                <a href="${item.url}" target="_blank" rel="noreferrer">${item.name}</a>
+                <div class="life-note">${item.note}</div>
+            `;
+        } else {
+            card.innerHTML = `
+                <div style="font-weight:bold;">${item.name}</div>
+                <div class="life-note">${item.note}</div>
+            `;
+        }
+        area.appendChild(card);
+    }
+}
+
+function getRareSideEggs(d){
+    const rare = [];
+    if(d >= 666 && d <= 900){
+        rare.push({
+            name:"Unidentified shadow",
+            url:"",
+            note:"Something moves just beyond the edge of your light."
+        });
+    }
+    if(d >= 15000 && d <= 18000){
+        rare.push({
+            name:"Kraken?",
+            url:"",
+            note:"Probably not. Probably."
+        });
+    }
+    if(d >= 25000 && d <= 36000){
+        rare.push({
+            name:"Mermaid sighting",
+            url:"",
+            note:"Almost certainly impossible. Still... the water seemed to wave back."
+        });
+    }
+    if(d >= 30000 && d <= 36000){
+        rare.push({
+            name:"Rubber duck",
+            url:"",
+            note:"At this depth, that feels less funny and more cosmically concerning."
+        });
+    }
+    return rare;
+}
+
+function updateUI(){
+    const unlocked = effectiveUnlocks();
+
+    document.getElementById("depth").textContent = depth.toLocaleString() + " ft";
+    document.getElementById("maxDepth").textContent = maxDepth.toLocaleString() + " ft";
+    document.getElementById("time").textContent = time + " min";
+    document.getElementById("pressure").textContent = getPressureLabel(depth);
+
+    const rs = requiredSafetyStop();
+    document.getElementById("stop").textContent = rs === 0 ? "None" : `${Math.min(stopMinutes, rs)}/${rs} min`;
+
+    document.body.style.background = getBackground(depth);
+    document.getElementById("modeDescription").textContent = currentMode().intro;
+
+    document.getElementById("modeTech").disabled = !unlocked.tech;
+    document.getElementById("modeSub").disabled = !unlocked.sub;
+
+    updateBadges();
+    updateLife();
+}
+
+function resetGame(){
+    depth = 0;
+    maxDepth = 0;
+    time = 0;
+    stopMinutes = 0;
+    alive = true;
+    won = false;
+    enteredStopZone = false;
+    triggeredDepthEggs = new Set();
+
+    document.getElementById("failBox").style.display = "none";
+    document.getElementById("successBox").style.display = "none";
+    document.getElementById("successText").textContent = "";
+    document.getElementById("log").innerHTML = "";
+
+    log("You slip beneath the surface and the noise of the world disappears.");
+    log("Your depth, time, and movement rate now determine whether this dive is safe.");
+    log("Enter feet, then Ascend, Descend, or Wait.");
+    log(`Current mode: ${currentMode().name}. ${currentMode().intro}`);
+    if(devMode()){
+        log("Dev Mode is active. All modes are unlocked and fatal checks are ignored.", "easter");
+    }
+    updateUI();
+}
+
+function handleDevModeToggle(){
+    if(devMode()){
+        log("Dev Mode enabled. The ocean's rules bend around you.", "easter");
+    } else {
+        log("Dev Mode disabled. Dive safety rules restored.");
+    }
+    updateUI();
+}
+
+function switchMode(newMode){
+    const unlocked = effectiveUnlocks();
+    if(newMode === "tech" && !unlocked.tech) return;
+    if(newMode === "sub" && !unlocked.sub) return;
+    modeKey = newMode;
+    resetGame();
+}
+
+function kill(message){
+    if(devMode()){
+        log("Dev Mode ignored the danger: " + message, "easter");
+        if(modeKey === "sub" && depth > 25000){
+            log("Physics files a complaint but cannot reach you down here.", "easter");
+        }
+        return;
+    }
+    log(message);
+    alive = false;
+    document.getElementById("failBox").style.display = "block";
+}
+
+function unlockIfNeeded(){
+    if(modeKey === "scuba" && !unlocks.tech){
+        unlocks.tech = true;
+        log("New mode unlocked: Geared-Up Human.", "easter");
+    } else if(modeKey === "tech" && !unlocks.sub){
+        unlocks.sub = true;
+        log("New mode unlocked: Submarine.", "easter");
+    }
+}
+
+function checkMoveAmountEasterEgg(feet, direction){
+    if(feet === 42){
+        log("The ocean shrugs knowingly.", "easter");
+    }
+    if(feet === 0 && depth > 0){
+        log("You remain exactly where you are. The sea is unimpressed.", "easter");
+    }
+    if(feet === 69){
+        log("Nice. The fish pretend not to notice.", "easter");
+    }
+    if(feet === 404){
+        log("Depth not found.", "easter");
+    }
+    if(feet === 666){
+        log("That is an unsettlingly specific number of feet.", "easter");
+    }
+    if(feet === 1337){
+        log("Elite movement selected.", "easter");
+    }
+    if(devMode() && feet > 100000){
+        log("You descend into myth.", "easter");
+    }
+    if(direction === "ascend" && feet === 1){
+        log("A cautious rise. Respectable.", "easter");
+    }
+    if(direction === "descend" && feet === 1){
+        log("A tiny drop into the unknown.", "easter");
+    }
+}
+
+function checkDepthEasterEggs(oldDepth, newDepth){
+    const eggs = [
+        { key: "666", threshold: 666, text: "Something moves just beyond your light." },
+        { key: "1337", threshold: 1337, text: "Elite depth reached." },
+        { key: "everest", threshold: 29032, text: "You have passed Mount Everest's height, upside down." },
+        { key: "challenger_near", threshold: 35800, text: "Challenger Deep is near." },
+        { key: "mariana", threshold: 36000, text: "You have reached the Mariana target depth. Darkness surrounds everything." }
+    ];
+
+    for(const egg of eggs){
+        if(triggeredDepthEggs.has(egg.key)) continue;
+        if(oldDepth < egg.threshold && newDepth >= egg.threshold){
+            log(egg.text, "easter");
+            triggeredDepthEggs.add(egg.key);
+        }
+    }
+
+    if(modeKey === "tech" && newDepth > 700 && !triggeredDepthEggs.has("tech_warning")){
+        log("Your training screams that this is a terrible idea.", "easter");
+        triggeredDepthEggs.add("tech_warning");
+    }
+
+    if(modeKey === "sub" && newDepth > 20000){
+        if(Math.random() < 0.35){
+            log("The hull creaks like a whale song.", "easter");
+        }
+    }
+}
+
+function randomEncounter(){
+    const encounters = [];
+
+    if(modeKey === "sub"){
+        encounters.push("A distant sonar ping returns from something impossibly large.");
+    }
+
+    if(depth >= 0 && depth <= 200){
+        encounters.push("A swirl of silver fish flashes and disappears.");
+        encounters.push("Sunlight breaks into ribbons around you.");
+        encounters.push("A drifting jelly pulses like a tiny lantern.");
+    }
+
+    if(depth >= 200 && depth <= 3300){
+        encounters.push("A ghostly diver silhouette seems to hover far off, then vanishes.");
+        encounters.push("A glowing jelly bloom expands in the dark.");
+        encounters.push("A giant shadow passes beneath you and never turns upward.");
+        encounters.push("You see what might be a lost anchor tumbling into blackness.");
+    }
+
+    if(depth >= 3300){
+        encounters.push("A ship bell lies half-buried in the silt.");
+        encounters.push("A tiny cloud of amphipods scatters from your light.");
+        encounters.push("The abyss stares back in total silence.");
+    }
+
+    if(depth >= 15000){
+        encounters.push("You spot a treasure chest. Inside is a waterproof sandwich. It raises more questions than answers.");
+    }
+
+    if(depth >= 25000){
+        encounters.push("For one second, you could swear something waved at you.");
+    }
+
+    if(encounters.length > 0 && Math.random() < 0.32){
+        const msg = encounters[Math.floor(Math.random() * encounters.length)];
+        log(msg, "easter");
+    }
+}
+
+function tick(newDepth){
+    const oldDepth = depth;
+    time += 1;
+    depth = newDepth;
+    if(depth > maxDepth) maxDepth = depth;
+    checkDepthEasterEggs(oldDepth, newDepth);
+    updateUI();
+}
+
+function descend(){
+    if(!alive || won) return;
+
+    const feet = getFeet();
+    if(!Number.isFinite(feet) || feet < 0){
+        log("Enter a valid non-negative number of feet first.");
+        return;
+    }
+
+    checkMoveAmountEasterEgg(feet, "descend");
+
+    if(feet === 0){
+        log("You remain exactly where you are.", "easter");
+        time += 1;
+        updateUI();
+        return;
+    }
+
+    const mode = currentMode();
+    const rsBeforeMove = requiredSafetyStop();
+    const wasInStopZone =
+        modeKey !== "sub" &&
+        depth >= mode.safetyStopMinDepth &&
+        depth <= mode.safetyStopMaxDepth;
+
+    if(wasInStopZone && stopMinutes < rsBeforeMove){
+        stopMinutes = 0;
+        enteredStopZone = false;
+    }
+
+    const newDepth = depth + feet;
+    tick(newDepth);
+    log(`You descend ${feet} ft. Depth: ${depth.toLocaleString()} ft. 1 minute passes.`);
+
+    if(!devMode() && depth > 36000){
+        kill("You tried to go deeper than the Mariana game limit. Beyond this point, the abyss is left to Dev Mode. Mission failed.");
+        return;
+    }
+
+    if(feet > mode.maxDescent){
+        kill("You descended too fast and lose control of the dive. Mission failed.");
+        return;
+    }
+
+    if(depth > mode.maxDepth){
+        if(modeKey === "sub"){
+            kill("You pushed your submersible past its rated envelope. The surrounding pressure crushes the hull. Mission failed.");
+        } else {
+            kill(`You exceeded the safe depth limit for ${mode.name}. Mission failed.`);
+        }
+        return;
+    }
+}
+
+function ascend(){
+    if(!alive || won) return;
+
+    const feet = getFeet();
+    if(!Number.isFinite(feet) || feet < 0){
+        log("Enter a valid non-negative number of feet first.");
+        return;
+    }
+
+    checkMoveAmountEasterEgg(feet, "ascend");
+
+    if(feet === 0){
+        log("You rise by exactly zero feet. A masterclass in restraint.", "easter");
+        time += 1;
+        updateUI();
+        return;
+    }
+
+    const mode = currentMode();
+    const oldDepth = depth;
+    const newDepth = Math.max(0, depth - feet);
+    const rsBeforeMove = requiredSafetyStop();
+
+    tick(newDepth);
+    log(`You ascend ${feet} ft. Depth: ${depth.toLocaleString()} ft. 1 minute passes.`);
+
+    if(feet > mode.maxAscent){
+        if(modeKey === "sub"){
+            kill("You rise far too aggressively in the submersible and lose safe control of the ascent profile. Mission failed.");
+        } else {
+            kill("You ascended too quickly. Expanding gas and decompression stress hit hard. Mission failed.");
+        }
+        return;
+    }
+
+    if(modeKey !== "sub"){
+        const wasInStopZone =
+            oldDepth >= mode.safetyStopMinDepth &&
+            oldDepth <= mode.safetyStopMaxDepth;
+
+        const nowInStopZone =
+            depth >= mode.safetyStopMinDepth &&
+            depth <= mode.safetyStopMaxDepth;
+
+        if(nowInStopZone){
+            enteredStopZone = true;
+            stopMinutes += 1;
+            log(`You are in the stop zone. Progress: ${Math.min(stopMinutes, rsBeforeMove)}/${rsBeforeMove} minute(s).`);
+        } else if(
+            wasInStopZone &&
+            !nowInStopZone &&
+            stopMinutes < rsBeforeMove
+        ){
+            stopMinutes = 0;
+            enteredStopZone = false;
+            log("You left the stop zone before finishing. Stop progress reset.");
+        }
+    }
+
+    if(depth === 0){
+        const rs = requiredSafetyStop();
+        if(modeKey !== "sub" && rs > 0 && stopMinutes < rs){
+            kill(`You surfaced without completing the required stop of ${rs} minute(s) at ${mode.safetyStopMinDepth}-${mode.safetyStopMaxDepth} ft. Mission failed.`);
+            return;
+        }
+
+        log("You break the surface safely. Dive complete.");
+        if(modeKey !== "sub"){
+            log("Safety stops are boring right up until they aren't.", "easter");
+            log("Ascending slowly is less cinematic, but much more survivable.", "easter");
+            log("The ocean does not negotiate with nitrogen.", "easter");
+        }
+
+        unlockIfNeeded();
+        won = true;
+        alive = false;
+
+        document.getElementById("successBox").style.display = "block";
+        document.getElementById("successText").textContent = educationalMessage();
+    }
+}
+
+function waitAction(){
+    if(!alive || won) return;
+
+    time += 1;
+
+    if(modeKey !== "sub"){
+        const mode = currentMode();
+        const inStopZone =
+            depth >= mode.safetyStopMinDepth &&
+            depth <= mode.safetyStopMaxDepth;
+        const rs = requiredSafetyStop();
+
+        if(inStopZone && rs > 0){
+            enteredStopZone = true;
+            stopMinutes += 1;
+            log(`You hold position at ${depth.toLocaleString()} ft for 1 minute. Stop progress: ${Math.min(stopMinutes, rs)}/${rs}.`);
+        } else {
+            log(`You hover at ${depth.toLocaleString()} ft for 1 minute.`);
+        }
+    } else {
+        log(`You hold the submersible steady at ${depth.toLocaleString()} ft for 1 minute.`);
+    }
+
+    randomEncounter();
+    updateUI();
+}
+
+resetGame();
+</script>
 </body>
 </html>
